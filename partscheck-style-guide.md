@@ -168,8 +168,8 @@ Section card content: `padding: 20px` or `padding: 24px`
 |---|---|---|
 | Cards (Info, Settings tables) | `1px solid #e5e7eb` | `6px` |
 | Create Rule section cards | `1px solid #e5e7eb` | `8px` |
-| Buttons (primary) | none | `4px–6px` |
-| Buttons (secondary) | `1px solid #d1d5db` | `4px–6px` |
+| Buttons (primary) | none | `4px` |
+| Buttons (secondary) | `1px solid #d1d5db` | `4px` |
 | Inputs | `1px solid #d1d5db` | `4px–5px` |
 | Badges / pills | none | `10px–20px` (fully rounded) |
 | Small badges (SYSTEM, DEFAULT) | none | `3px` |
@@ -199,7 +199,7 @@ Section card content: `padding: 20px` or `padding: 24px`
 background: #0FA83E;
 color: white;
 border: none;
-border-radius: 6px;
+border-radius: 4px;
 padding: 7px 16px;
 font-size: 12px;
 font-weight: 700;
