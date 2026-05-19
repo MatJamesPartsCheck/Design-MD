@@ -73,10 +73,10 @@ Each supplier has a fixed colour used for their circle avatar, column colour bar
 
 | Type | Hex |
 |---|---|
-| OEM | `#337ab7` |
+| OEM | `#3067cb` |
 | Aftermarket (AftM) | `#a852ba` |
-| Used | `#5cb85c` |
-| Reconditioned (Reco) | `#f0ad4e` |
+| Used | `#6bc23c` |
+| Reconditioned (Reco) | `#e99f24` |
 | Parallel | `#5cb85c` |
 
 ### Semantic Colours
