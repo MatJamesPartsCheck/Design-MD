@@ -7,7 +7,7 @@
 ## 1. Brand
 
 **Product name:** PartsCheck  
-**Tagline:** Smart. Simple. Streamlined.  
+**Tagline:** Smart. Simple. 
 **Audience:** Panel repairers, estimators, workshop managers
 
 ---
