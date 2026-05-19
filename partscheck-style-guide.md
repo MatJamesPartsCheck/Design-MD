@@ -57,18 +57,6 @@ These are used for pills, badges, selected states and backgrounds. **Do not repl
 | `gray-700` | `#374151` | Primary body text |
 | `gray-900` | `#111` | Headings, strong emphasis |
 
-### Supplier Colours
-
-Each supplier has a fixed colour used for their circle avatar, column colour bar and type labels.
-
-| Supplier | Hex |
-|---|---|
-| OEM Direct | `#337ab7` (blue) |
-| Parts Network | `#9b59b6` (purple) |
-| ATS Parts | `#e91e8c` (pink) |
-| Eco Parts | `#5cb85c` (green) |
-| Reco Centre | `#f0ad4e` (amber) |
-
 ### Part Type Colours
 
 | Type | Hex |
