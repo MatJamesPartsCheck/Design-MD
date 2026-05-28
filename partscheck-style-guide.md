@@ -116,7 +116,8 @@ System font stack — no external font loaded. Clean, fast, neutral.
 | `600` | Form labels, table values, button text (secondary) |
 | `700` | Section headings, column headers, badge text, most UI labels |
 | `800` | Page headings, section titles (System Templates, Margin Rules) |
-| `900` | Price amounts in grid cells |
+| `800` | Price amounts in grid cells (selected) |
+| `500` | Price amounts in grid cells (unselected) |
 
 ### Text Colour Conventions
 
@@ -416,7 +417,7 @@ The grid view is a `<table>` with `border-collapse: collapse`.
 
 Price cell content (top to bottom):
 1. Type label (`font-size: 10px, font-weight: 700, uppercase, supplier type colour`) + optional comment icon
-2. Price amount (`font-size: 16px, font-weight: 900, color: #222`)
+2. Price amount (`font-size: 16px, font-weight: 800 selected / 500 unselected, color: #222`)
 3. Profit (`font-size: 10px, font-weight: 700, color: #0FA83E`)
 4. ETD (`font-size: 9px, color: #999`)
 5. MODIFY button (hidden, revealed on selection — `position: absolute, bottom: 0, left: 0, right: 0`)
