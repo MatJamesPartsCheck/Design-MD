@@ -18,30 +18,24 @@
 
 | Token | Hex | Usage |
 |---|---|---|
-| `brand-green` | `#0FA83E` | Nav active states, selected tab underlines, Save buttons, quote number text, tooltip headers, profit text, selected count |
-| `brand-green-dark` | `#0d9235` | Hover state on green buttons, border on green buttons |
+| `brand-green` | `#16a34a` | Nav active states, selected tab underlines, Save buttons, quote number text, tooltip headers, profit text, selected count. Same hex as Tailwind `green-600` — no Tailwind config override needed. |
+| `brand-green-dark` | `#15803d` | Hover state on green buttons, border on green buttons. Same hex as Tailwind `green-700`. |
 
-> The brand green is used for identity and interaction. Do not use it for backgrounds — use the Tailwind green scale for that.
+> The brand green is identical to Tailwind `green-600` and the dark variant to `green-700`, so the entire green system runs on stock Tailwind values — no custom theme extensions required. Use the brand green for identity and interaction (text, nav active state, primary button fill); for backgrounds and pill fills, use the lighter shades (`green-50`–`green-200`) rather than the brand shade.
 
 ### Action & Status Greens (Tailwind scale)
 
-These are used for pills, badges, selected states and backgrounds. **Do not replace these with the brand green.**
+These are stock Tailwind values, used for pills, badges, selected states and backgrounds. The brand green sits inside this scale at `green-600`, so the whole palette is internally consistent — no custom values to maintain.
 
 | Token | Hex | Usage |
 |---|---|---|
 | `green-50` | `#f0fdf4` | Selected cell background, pill backgrounds |
 | `green-100` | `#dcfce7` | DEFAULT badge background |
 | `green-200` | `#bbf7d0` | Borders on green pills |
-| `green-500` | `#0FA83E` | Primary action (same as brand) |
-| `green-600` | `#0d9235` | Button hover |
-| `green-700` | `#15803d` | Dark text on light green |
+| `green-500` | `#22c55e` | Grid View selected cell outline — deliberately one step softer than brand-green so selection reads distinctly from primary actions |
+| `green-600` | `#16a34a` | **Primary brand green** (same as `brand-green`) |
+| `green-700` | `#15803d` | Hover state for primary buttons / nav, dark text on light green |
 | `green-800` | `#166534` | Text on DEFAULT badge |
-
-### List View Green
-
-| Token | Hex | Usage |
-|---|---|---|
-| `list-green` | `#5cb85c` | Selected row highlight, SELECT/SELECTED buttons in list view |
 
 ### Grey Scale (Tailwind)
 
@@ -125,7 +119,7 @@ System font stack — no external font loaded. Clean, fast, neutral.
 - **Primary body:** `#374151`
 - **Secondary / descriptions:** `#6b7280`
 - **Placeholders / metadata:** `#9ca3af`
-- **Green text (profit, active states, brand):** `#0FA83E`
+- **Green text (profit, active states, brand):** `#16a34a`
 - **Uppercase tracking labels:** `letter-spacing: 0.5px–0.6px`
 
 ---
@@ -175,7 +169,7 @@ Section card content: `padding: 20px` or `padding: 24px`
 | Tooltips | `0 8px 24px rgba(0,0,0,.10)` |
 | Modals | `0 20px 60px rgba(0,0,0,.25)` |
 | Dropdowns (rule picker, print menu) | `0 12px 36px rgba(0,0,0,.15)` |
-| Green action buttons | `0 2px 8px rgba(15,168,62,.3)` |
+| Green action buttons | `0 2px 8px rgba(22,163,74,.3)` |
 
 ---
 
@@ -185,7 +179,7 @@ Section card content: `padding: 20px` or `padding: 24px`
 
 #### Primary (Green)
 ```css
-background: #0FA83E;
+background: #16a34a;
 color: white;
 border: none;
 border-radius: 4px;
@@ -194,7 +188,7 @@ font-size: 12px;
 font-weight: 700;
 cursor: pointer;
 ```
-Hover: `background: #0d9235`
+Hover: `background: #15803d`
 
 #### Secondary (Bordered)
 ```css
@@ -235,7 +229,7 @@ Pills are status indicators. **Do not change their colours** — they are intent
 | Warning/Missing (red) | `#fef2f2` | `#fecaca` | `#b91c1c` |
 | Neutral/Pending (amber) | `#fef3c7` | `#fde68a` | `#92400e` |
 | Inactive/Empty | `#f1f5f9` | `#e2e8f0` | `#9ca3af` |
-| NEW badge | `#0FA83E` bg | none | `white` |
+| NEW badge | `#16a34a` bg | none | `white` |
 | SYSTEM badge | `#e5e7eb` bg | none | `#6b7280` |
 | DEFAULT badge | `#dcfce7` bg | none | `#166534` |
 | INACTIVE badge | `#f3f4f6` bg | none | `#9ca3af` |
@@ -264,7 +258,7 @@ pointer-events: none;
 ```css
 font-size: 10px;
 font-weight: 700;
-color: #0FA83E;
+color: #16a34a;
 text-transform: uppercase;
 letter-spacing: 0.5px;
 border-bottom: 1px solid #f3f4f6;
@@ -275,7 +269,7 @@ padding-bottom: 5px;
 **Data rows:**
 - Label: `font-size: 10px; color: #6b7280`
 - Value: `font-size: 10px; color: #111; font-weight: 600`
-- Green value: `color: #0FA83E`
+- Green value: `color: #16a34a`
 - Amber value: `color: #d97706`
 - Row divider: `border-bottom: 1px solid #f3f4f6`
 
@@ -329,7 +323,7 @@ font-weight: 600;
 box-shadow: 0 8px 24px rgba(0,0,0,.3);
 ```
 
-Show for 3–3.5 seconds then fade out. Include a green dot indicator (`background: #0FA83E`, `border-radius: 50%`, `20px × 20px`) on the left.
+Show for 3–3.5 seconds then fade out. Include a green dot indicator (`background: #16a34a`, `border-radius: 50%`, `20px × 20px`) on the left.
 
 ---
 
@@ -345,7 +339,7 @@ outline: none;
 background: #fff;
 ```
 
-Active/focused border: `1px solid #0FA83E`  
+Active/focused border: `1px solid #16a34a`  
 Disabled: `background: #f9fafb; color: #9ca3af`
 
 **Select dropdowns** — always use `appearance: none` and a custom chevron SVG background:
@@ -372,7 +366,7 @@ input[type=number]::-webkit-inner-spin-button { display: none; }
 width: 40px;
 height: 22px;
 border-radius: 11px;
-background: checked ? #0FA83E : #d1d5db;
+background: checked ? #16a34a : #d1d5db;
 ```
 
 Thumb: `16px × 16px`, `border-radius: 50%`, `background: white`, `transition: left 0.2s`  
@@ -418,13 +412,13 @@ The grid view is a `<table>` with `border-collapse: collapse`.
 Price cell content (top to bottom):
 1. Type label (`font-size: 10px, font-weight: 700, uppercase, supplier type colour`) + optional comment icon
 2. Price amount (`font-size: 16px, font-weight: 800 selected / 500 unselected, color: #222`)
-3. Profit (`font-size: 10px, font-weight: 700, color: #0FA83E`)
+3. Profit (`font-size: 10px, font-weight: 700, color: #16a34a`)
 4. ETD (`font-size: 9px, color: #999`)
 5. MODIFY button (hidden, revealed on selection — `position: absolute, bottom: 0, left: 0, right: 0`)
 
-**Selected state:** `outline: 2px solid #5cb85c; outline-offset: -2px; background: #f0fff4`
+**Selected state:** `outline: 2px solid #22c55e` (Tailwind `green-500` — deliberately softer than brand-green so the outline reads as "selected" rather than competing with the primary action colour), `outline-offset: -2px; background: #f0fff4`
 
-**Part No. Match indicator:** Green corner triangle (`#0FA83E`) with white tick — `position: absolute, top: 0, right: 0`
+**Part No. Match indicator:** Green corner triangle (`#16a34a`) with white tick — `position: absolute, top: 0, right: 0`
 
 **Totals row:** `background: #f0f0f0`, `border-top: 2px solid #ccc`, `font-weight: 700`, `font-size: 12px`
 
@@ -447,7 +441,7 @@ Selected row: `background: #f0fff4`
 Selected values: bold, `color: #111`
 
 **SELECT button:** `border: 1px solid #ccc`, `background: #fff`, `border-radius: 3px`  
-**SELECTED button:** `background: #5cb85c`, `color: white`  
+**SELECTED button:** `background: #16a34a` (brand-green / Tailwind `green-600`), `color: white`  
 **Modify button:** `border: 1px solid #ccc`, `background: #fff`, appears alongside SELECTED
 
 ---
@@ -469,9 +463,9 @@ Nav items: `padding: 8px 18px`, `font-size: 10px`, `font-weight: 700`, `letter-s
 
 **Icon circles:** `28px × 28px`, `border-radius: 50%`  
 - Inactive: `background: #e0e0e0`, icon fill `#bbb`  
-- Active: `background: #0FA83E`, icon fill `white`
+- Active: `background: #16a34a`, icon fill `white`
 
-Active item text: `color: #0FA83E`  
+Active item text: `color: #16a34a`  
 Inactive item text: `color: #999`  
 Active bottom border: `3px solid transparent` → active tab has no bottom border (the icon circle indicates active state)
 
@@ -490,9 +484,9 @@ Items: `padding: 10px 36px`, `font-size: 11.5px`, `font-weight: 700`, `letter-sp
 
 **Badge circles:** `21px × 21px`, `border-radius: 50%`  
 - Inactive: `background: #555; color: #ccc`  
-- Active: `background: #0FA83E; color: white`
+- Active: `background: #16a34a; color: white`
 
-Active item: `color: white`, `border-bottom: 3px solid #0FA83E`  
+Active item: `color: white`, `border-bottom: 3px solid #16a34a`  
 Inactive item: `color: #ccc`, `border-bottom: 3px solid transparent`
 
 ---
@@ -504,13 +498,13 @@ Same style as Sub-Nav — `background: #3a3a3a`. Tabs span the full width.
 Tabs: General Settings | Account Settings | Margin Settings | Data Settings  
 Each tab has: circle badge with icon + label text + optional NEW pill
 
-**NEW pill on tab:** `background: #0FA83E; color: white; font-size: 9px; font-weight: 800; border-radius: 3px; padding: 1px 5px`
+**NEW pill on tab:** `background: #16a34a; color: white; font-size: 9px; font-weight: 800; border-radius: 3px; padding: 1px 5px`
 
 ---
 
 ### Settings Sidebar Nav (future)
 
-Not currently implemented. Pattern would follow: `background: #fff`, `border-right: 1px solid #e5e7eb`, active item `border-left: 3px solid #0FA83E; background: #f0fdf4; color: #0FA83E`
+Not currently implemented. Pattern would follow: `background: #fff`, `border-right: 1px solid #e5e7eb`, active item `border-left: 3px solid #16a34a; background: #f0fdf4; color: #16a34a`
 
 ---
 
@@ -526,7 +520,7 @@ z-index: 298;
 
 **Stat label:** `font-size: 10px; color: #6b7280; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px`  
 **Stat value:** `font-size: 22px; font-weight: 700; color: #111`  
-**Your Profit value:** `color: #0FA83E`
+**Your Profit value:** `color: #16a34a`
 
 **Inline badge pills (below values):**
 - Cost: `▼ $X vs list` — green if below dealer list, red if above
@@ -637,13 +631,13 @@ All tooltips use white backgrounds with light borders and shadows. Never use dar
 Sell prices are derived from the active rule at display time. If the active rule changes, all sell prices and totals recalculate automatically.
 
 **6. The brand green is for identity and interaction, not decoration.**  
-Use `#0FA83E` for active states, confirmation actions, profit values and brand moments. Use the Tailwind green scale for backgrounds and pill colours.
+Use `#16a34a` for active states, confirmation actions, profit values and brand moments. Use the Tailwind green scale for backgrounds and pill colours.
 
 **7. Consistent card pattern.**  
 Detail cards always follow the same structure: `#f8fafc` header with uppercase label, `1px solid #e5e7eb` border, `6px` radius, white content area. The Rule Summary card is the exception — it uses a `4px solid #1f2937` left accent to signal it is a reference panel, not an input section.
 
 **8. Typography hierarchy is simple.**  
-Headings are `#111`, body is `#374151`, secondary is `#6b7280`, metadata is `#9ca3af`. Green text is brand green `#0FA83E` only.
+Headings are `#111`, body is `#374151`, secondary is `#6b7280`, metadata is `#9ca3af`. Green text is brand green `#16a34a` only.
 
 **9. Labels sit outside controls.**  
 Dropdowns and selects always have their label as plain text to the left (e.g. "Active Rule:", "Quick Select:", "View:") — never inside the control as a default option. Exception: the Quick Select `— None —` placeholder which indicates an unset state.
@@ -678,4 +672,4 @@ All other icons are inline SVGs. Sizing conventions:
 
 ---
 
-*Last updated: May 2026. Maintained alongside the PartsCheck prototype. Update this document whenever a design decision changes.*
+*Last updated: June 2026 — primary green moved to Tailwind `green-600` (`#16a34a`) with hover at `green-700` (`#15803d`); the standalone `list-green` token was retired; List View SELECTED button now uses brand green; Grid View selected cell outline moved to Tailwind `green-500` (`#22c55e`) for a softer "selected" read that doesn't compete with primary actions. The entire green palette (except part-type colours) is now stock Tailwind with no custom theme overrides. Maintained alongside the PartsCheck prototype. Update this document whenever a design decision changes.*
