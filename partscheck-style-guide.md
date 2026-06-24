@@ -497,13 +497,13 @@ Nav items: `padding: 8px 18px`, `font-size: 10px`, `font-weight: 700`, `letter-s
 
 | State | Background | Icon colour |
 |---|---|---|
-| Inactive | `#e5e5e5` | `#d4d4d4` |
+| Inactive | `#e5e5e5` (neutral-200) | `#6b7280` (gray-500) |
 | Hover | `#4a4a4a` | `#fff` |
 | Active | `#16a34a` | `#fff` |
 
 ```css
 .nav-icon-circle { background: #e5e5e5; }
-.nav-icon-circle i { font-size: 13px; color: #d4d4d4; }
+.nav-icon-circle i { font-size: 13px; color: #6b7280; }
 .nav-link:hover .nav-icon-circle.gray { background: #4a4a4a; }
 .nav-link:hover .nav-icon-circle.gray i { color: #fff; }
 .nav-link.active .nav-icon-circle { background: #16a34a; }
@@ -529,9 +529,15 @@ z-index: 299;
 
 Items: `padding: 10px 36px`, `font-size: 11.5px`, `font-weight: 700`, `letter-spacing: 0.6px`, `text-transform: uppercase`
 
-**Badge circles:** `21px × 21px`, `border-radius: 50%`  
-- Inactive: `background: #4b5563; color: #d1d5db`  
+**Badge circles:** `21px × 21px`, `border-radius: 50%`, `font-size: 11px`
+- Inactive: `background: #fff; color: #6b7280` (gray-500)
 - Active: `background: #16a34a; color: white`
+
+| Tab | FA4 Icon |
+|---|---|
+| Check Price | `fa fa-usd` |
+| Info | `fa fa-info-circle` |
+| Documents | `fa fa-file-text-o` |
 
 Active item: `color: white`, `border-bottom: 3px solid #16a34a`  
 Inactive item: `color: #d1d5db`, `border-bottom: 3px solid transparent`
