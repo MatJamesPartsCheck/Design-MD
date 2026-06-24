@@ -413,7 +413,7 @@ All detail cards follow the same structure:
 ```html
 <div style="border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; background: #fff">
   <!-- Header -->
-  <div style="background: #f8fafc; padding: 11px 20px; border-bottom: 1px solid #e5e7eb">
+  <div style="background: #f8fafc; /* Tailwind slate-50 */ padding: 11px 20px; border-bottom: 1px solid #e5e7eb">
     <span style="font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.6px">
       Section Title
     </span>
@@ -629,7 +629,7 @@ Hovering each stat reveals a `.sitip` tooltip with detailed breakdown.
 ## 10. Toolbar
 
 ```
-background: #f8fafc;
+background: #f8fafc; /* Tailwind slate-50 */
 border-bottom: 1px solid #e5e7eb;
 padding: 8px 16px;
 position: sticky;
@@ -652,7 +652,7 @@ Toolbar elements left to right:
 
 ## 11. Modals
 
-All modals follow a single standard. The **Supplier Associations modal** is the reference implementation. **Do not use coloured (green or brand) modal headers** — all headers are `#f8fafc` with `#111827` dark text regardless of context.
+All modals follow a single standard. The **Supplier Associations modal** is the reference implementation. **Do not use coloured (green or brand) modal headers** — all headers are `#f8fafc` (Tailwind slate-50) with `#111827` dark text regardless of context.
 
 ### Overlay
 ```css
@@ -672,7 +672,7 @@ overflow: hidden;
 
 ### Header `.mhd`
 ```css
-background: #f8fafc;
+background: #f8fafc; /* Tailwind slate-50 */
 padding: 14px 20px;
 border-bottom: 1px solid #e5e7eb;
 display: flex; align-items: center; justify-content: space-between;
@@ -699,7 +699,7 @@ background: #f9fafb;
 | Primary | `background: #16a34a; color: #fff; border: none` |
 | Destructive | `background: #ef4444; color: #fff; border: none` |
 
-Destructive modals may show a small red circle icon (`background: #fef2f2; stroke: #ef4444`) alongside the standard `#f8fafc` header — the header background does not change to red.
+Destructive modals may show a small red circle icon (`background: #fef2f2; stroke: #ef4444`) alongside the standard `#f8fafc` (slate-50) header — the header background does not change to red.
 
 ---
 
