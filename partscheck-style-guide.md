@@ -443,7 +443,7 @@ The grid view is a `<table>` with `border-collapse: collapse`.
 
 Price cell content (top to bottom):
 1. Type label (`font-size: 10px, font-weight: 700, uppercase, supplier type colour`) + optional comment icon
-2. Price amount (`font-size: 16px, font-weight: 900, color: #222`)
+2. Price amount (`font-size: 16px, font-weight: 700, color: #222`)
 3. Profit (`font-size: 10px, font-weight: 700, color: #16a34a`)
 4. ETD (`font-size: 9px, color: #a3a3a3`)
 5. MODIFY button (hidden, revealed on selection — `position: absolute, bottom: 0, left: 0, right: 0`)
