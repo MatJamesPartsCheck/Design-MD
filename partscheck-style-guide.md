@@ -7,7 +7,7 @@
 ## 1. Brand
 
 **Product name:** PartsCheck  
-**Tagline:** Smart. Simple. 
+**Tagline:** Smart. Simple. Streamlined
 **Audience:** Panel repairers, estimators, workshop managers
 
 ---
@@ -55,11 +55,11 @@ These are stock Tailwind values, used for pills, badges, selected states and bac
 
 | Type | Hex |
 |---|---|
-| OEM | `#3067cb` |
-| Aftermarket (AftM) | `#a852ba` |
-| Used | `#6bc23c` |
-| Reconditioned (Reco) | `#e99f24` |
-| Parallel | `#5cb85c` |
+| OEM | `#2563eb` | blue-600 |
+| Aftermarket (AftM) | `#a855f7` | purple-500 |
+| Used / Recycled | `#84cc16` | lime-500 |
+| Reconditioned (Reco) | `#f59e0b` | amber-500 |
+| Parallel | `#6b7280` | gray-500 |
 
 ### Line Status Colours
 
@@ -590,7 +590,7 @@ Toolbar elements left to right:
 ### Check Price
 Primary quoting screen. Shows parts grid with supplier pricing. Sticky nav, sub-nav, summary bar, toolbar and column headers. Two views: Grid (default) and List.
 
-**Sub-nav tabs:** Check Price | Info | Documents
+**Sub-nav tabs:** Check Price | Info | Images | Documents
 
 ### Info
 Quote and vehicle metadata. Three white cards: Quote Basic Info, Vehicle Info, No Parts. Same card style as Settings detail cards.
@@ -703,3 +703,208 @@ All other icons are inline SVGs. Sizing conventions:
 ---
 
 *Last updated: June 2026 — primary green moved to Tailwind `green-600` (`#16a34a`) with hover at `green-700` (`#15803d`); the standalone `list-green` token was retired; List View SELECTED button now uses brand green; Grid View selected cell outline moved to Tailwind `green-500` (`#22c55e`) for a softer "selected" read that doesn't compete with primary actions. Added Line Status Colours (§2) for row states across both views — Removed (`red`), Additional (`sky`), Supplier (`amber`), Modified (`orange`), Optional (`green`). Each status has two shades: `-200` (part row / Grid View / List View part header) with CSS variable `--line-accent-<status>-bg`, and `-50` (List View supplier price rows) with CSS variable `--line-accent-<status>-bg-subtle`. The entire green palette (except part-type colours) is now stock Tailwind with no custom theme overrides. Maintained alongside the PartsCheck prototype. Update this document whenever a design decision changes.*
+
+---
+
+## 16. Modals
+
+All modals follow a single standard. The **Supplier Associations modal** is the reference implementation. **Do not use coloured (green or brand) modal headers** — all headers are `#f8fafc` (Tailwind slate-50) with `#111827` dark text regardless of context.
+
+### Overlay
+```css
+position: fixed; inset: 0;
+background: rgba(0,0,0,0.45);
+z-index: 800;
+display: flex; align-items: center; justify-content: center;
+```
+
+### Container
+```css
+background: #fff;
+border-radius: 4px; /* NOT 8px */
+box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+overflow: hidden;
+```
+
+### Header `.mhd`
+```css
+background: #f8fafc; /* Tailwind slate-50 */
+padding: 14px 20px;
+border-bottom: 1px solid #e5e7eb;
+display: flex; align-items: center; justify-content: space-between;
+```
+
+| Element | Style |
+|---|---|
+| Title `.mht` | `font-size: 13px; font-weight: 700; color: #111827` |
+| Subtitle `.mhs` | `font-size: 11px; color: #6b7280; margin-top: 2px` |
+| Close `.mhx` | `color: #9ca3af; font-size: 18px; background: none; border: none` |
+
+### Footer `.emf`
+```css
+padding: 12px 20px;
+border-top: 1px solid #e5e7eb;
+display: flex; justify-content: flex-end; gap: 8px;
+background: #f9fafb;
+```
+
+### Buttons
+| Type | Style |
+|---|---|
+| Cancel | `border: 1px solid #d1d5db; background: #fff; color: #374151` |
+| Primary | `background: #16a34a; color: #fff; border: none` |
+| Destructive | `background: #ef4444; color: #fff; border: none` |
+
+Destructive modals may show a small red circle icon (`background: #fef2f2; stroke: #ef4444`) alongside the standard `#f8fafc` (slate-50) header — the header background does not change to red.
+
+---
+
+## 17. Sub-Nav Count Pill — Unread Treatment
+
+Used on Images and Documents tabs to indicate unseen content. The pill sits inline after the tab label.
+
+**Unread state** (default until user clicks the tab):
+```css
+background: #fff;
+border: 1px solid #e5e7eb;
+color: #ef4444;        /* red-500 */
+font-size: 9px;
+font-weight: 700;
+border-radius: 10px;
+padding: 1px 6px;
+min-width: 18px;
+position: relative;
+```
+
+A red dot sits above the pill:
+```css
+position: absolute;
+top: -4px;
+right: -4px;
+width: 7px;
+height: 7px;
+border-radius: 50%;
+background: #ef4444;           /* red-500 */
+border: 1.5px solid #404040;   /* matches nav background — cut-out effect */
+```
+
+**Read state** (after user clicks the tab):
+```css
+color: #6b7280;        /* gray-500 */
+border-color: #e5e7eb;
+/* red dot: display: none */
+```
+
+Transition triggered by the tab's `onclick` handler. No animation — instant state change.
+
+---
+
+## 18. Documents Tab — Table Layout
+
+The Documents card uses a table matching the Applied Associations table in Data Settings.
+
+**Table header row:**
+```css
+background: #f8fafc;
+border-bottom: 1px solid #e5e7eb;
+font-size: 10px;
+font-weight: 700;
+color: #6b7280;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+padding: 8px 14px;
+```
+
+**Table body rows:**
+```css
+padding: 10px 14px;
+border-bottom: 1px solid #e5e7eb;
+hover: background #f8fafc;
+```
+
+**Columns:** Supplier (display name, not raw ID) | File Name (type badge + name + size/date) | Download (styled button)
+
+**File type badge:**
+```css
+width: 30px;
+height: 36px;
+background: #ef4444;   /* red-500 for PDF */
+border-radius: 3px;
+color: #fff;
+font-size: 8px;
+font-weight: 800;
+```
+
+**Download button:** `border: 1px solid #e5e7eb; border-radius: 4px; padding: 5px 12px; font-size: 11px; font-weight: 600; color: #374151` — not a plain text link.
+
+---
+
+## 19. Tooltip Headers
+
+All tooltip headers use `.tth`:
+
+```css
+font-size: 10px;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+text-align: center;
+border-bottom: 1px solid #f3f4f6;
+margin-bottom: 6px;
+padding-bottom: 5px;
+```
+
+**Colour** — always the supplier's type colour, not a fixed colour:
+- Price cell tooltip: uses `TYPE_COLOR` (part type colour)
+- Supplier header tooltip: uses `SUP_COLORS[sid]`
+
+**Alignment** — centre aligned on all tooltips.
+
+---
+
+## 20. Supplier Response Tooltips
+
+Hover over a supplier response dot (coloured circle in the grid header) to see a tooltip showing:
+- Header: Part type + RECEIVED in supplier type colour, centre-aligned
+- Rows: Supplier name, Phone, Parts Priced, Quote Ref
+
+---
+
+## 21. Price Cell Corner Indicators
+
+### Part No. Match (Flame)
+Green triangle (`#16a34a`) in the top-right corner of a price cell. Contains an inline SVG flame icon (no FA4 equivalent). Tooltip: "Part No. Match".
+
+### Donor Part Match (Blue Star)
+Blue triangle (`#1d4ed8`) in the top-right corner. Contains a ★ character. Tooltip: "Donor Part Match".
+
+---
+
+## 22. Margin Rules — Insurer Mapping (Debtor Mapping)
+
+Each margin rule has an **Applies To** field — a list of debtor names that should be matched against the quote's work provider/insurer name.
+
+- Matching is case-insensitive exact string match
+- A debtor name can only belong to one rule — enforced at UI level via amber conflict prompt
+- Standard Baseline has no debtors and always appears as the fallback
+- The active rule dropdown on Check Price filters to show **Matched** (rules where quote debtor is mapped) and **Other** (everything else)
+
+---
+
+## 23. Role-Based Access — Margin Settings
+
+| Role | Can View | Can Edit | Can Create | Can Delete |
+|---|---|---|---|---|
+| Owner | ✓ | ✓ | ✓ | ✓ |
+| Manager | ✓ | ✓ | ✓ | ✗ |
+| Estimator | ✓ | ✗ | ✗ | ✗ |
+
+Estimators see margin rules in read-only mode. Edit controls (pencil, Add Rule button, inline edit, delete) are hidden.
+
+---
+
+## 24. Donor Parts Scheme
+
+When `SITE_DONOR_ENABLED = true` a Donor Parts row appears in the Margin Settings rule form below the Recycled row. It maps the donor parts scheme to an insurer (Allianz / Suncorp / IAG / Not mapped).
+
+Donor part matches are shown in the price grid with a blue corner triangle indicator (see Section 21).
