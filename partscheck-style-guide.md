@@ -1265,6 +1265,63 @@ per part line**, not once per quote. The part still prices normally.
 *Temporary home. Phase 2 introduces a Part Restrictions section; acceptance is the
 same kind of statement and should fold into it. See `phase-2-notes.md`.*
 
+#### Not-accepted pills in the exceptions strip
+
+Refused part types appear as pills in the existing amber exceptions strip, before
+any rule exceptions.
+
+```
+⚠  Not accepted: [● Aftermarket] [● Recycled]  │  Exceptions: ...
+```
+
+**The pill takes the colour of the part type it names** — not a generic red or
+warning colour. A user reading "Aftermarket" should see the same purple they see
+on the grid column strip and the rule-card legend dot.
+
+| | |
+|---|---|
+| Fill | `#ffffff` — lifts off the amber `#fffbeb` strip |
+| Border | the part type's **true** colour |
+| Dot | 6px circle, the part type's **true** colour |
+| Text | a **darker shade** of the same hue (see below) |
+| Label | "Not accepted:" in `#92400e`, matching the strip |
+
+**Text uses a darker shade, deliberately.** The true type colours fail contrast on
+white — Recycled 1.98:1, Reconditioned 2.15:1, Aftermarket 3.96:1. Splitting the
+colour keeps the pill recognisable as that part type while staying readable.
+
+| Part type | Dot / border | Text | Text on white |
+|---|---|---|---|
+| OEM | `#2563eb` | `#1d4ed8` | 6.70:1 |
+| Aftermarket | `#a855f7` | `#7e22ce` | 6.98:1 |
+| Reconditioned | `#f59e0b` | `#b45309` | 5.02:1 |
+| Parallel | `#6b7280` | `#4b5563` | 7.56:1 |
+| Recycled | `#84cc16` | `#4d7c0f` | 4.99:1 |
+
+> Do not use the true colour for the text to "match" the dot. Three of the five
+> fail AA, and lime on white is effectively unreadable.
+
+#### Confirm dialog
+
+Selecting a refused part raises the **standard modal** — `.mo` / `.md` / `.mhd` /
+`.emf`, 420px wide, `#f8fafc` header with a close ✕, Cancel and a primary action
+in the footer. It is not a bespoke alert box.
+
+> **Title:** {Part type} parts not accepted
+> **Body:** This part type has been flagged as not acceptable by the insurer. It
+> will be priced at **{rate}** and may not be approved.
+
+The rate is computed live from the active rule, so it reflects what that part type
+is actually set to.
+
+Copy notes:
+- The **part type leads**, not the insurer. The user knows which insurer they are
+  quoting; what they need is which part type is the problem.
+- *"may not be approved"* rather than *"the insurer may reject it"* — softer, and
+  accurate. Rejection is not certain.
+- Acknowledged **once per part line** (`partId|supplierId`), not once per quote.
+  Each line is a separate commercial decision.
+
 ### Yes/No controls — use one pattern
 
 Settings uses **one** Yes/No component: a pair of radio-style buttons with a green
@@ -1307,8 +1364,12 @@ elsewhere is too faint.
    `::placeholder` separately or it will not dim with the rest of its row.
 6. **Every chip carries a stroke one step darker than its own fill.** No chip
    should read as heavier than its neighbours.
-7. **Passive signals beat filters for discovery.** A filter answers a question the
+7. **A pill naming a part type carries that part type's colour.** Never a generic
+   warning colour — the user should recognise the type before reading the word.
+   Where contrast fails, darken the text and keep the true colour on the dot and
+   border rather than abandoning the hue.
+8. **Passive signals beat filters for discovery.** A filter answers a question the
    user already has; a chip tells them there is a question worth asking.
-8. **A control that asserts state must stay true.** If the underlying data
+9. **A control that asserts state must stay true.** If the underlying data
    changes, either re-run the action or drop the state — never leave a button
    claiming something that no longer holds.
