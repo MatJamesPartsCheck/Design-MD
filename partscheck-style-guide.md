@@ -1304,8 +1304,11 @@ colour keeps the pill recognisable as that part type while staying readable.
 #### Confirm dialog
 
 Selecting a refused part raises the **standard modal** — `.mo` / `.md` / `.mhd` /
-`.emf`, 420px wide, `#f8fafc` header with a close ✕, Cancel and a primary action
-in the footer. It is not a bespoke alert box.
+`.emf`, 420px wide, `#f8fafc` header with a close ✕, and **Accept / Cancel** in
+the footer. It is not a bespoke alert box.
+
+**Cancel takes the primary treatment**, not Accept. The dialog warns that the
+insurer may not approve the part, so the safe path carries the emphasis.
 
 > **Title:** {Part type} parts not accepted
 > **Body:** This part type has been flagged as not acceptable by the insurer. It
