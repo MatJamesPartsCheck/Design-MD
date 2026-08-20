@@ -7,7 +7,7 @@
 ## 1. Brand
 
 **Product name:** PartsCheck  
-**Tagline:** Smart. Simple. Streamlined
+**Tagline:** Smart. Simple. Streamlined.
 **Audience:** Panel repairers, estimators, workshop managers
 
 ---
@@ -299,6 +299,32 @@ padding-bottom: 5px;
 
 **Tooltip positioning:** Use JavaScript to calculate `position: fixed` top/left on `mouseover`. Flip above the element when within 300px of the bottom of the viewport.
 
+#### Field Help (form labels)
+
+A small info ring beside a form label, revealing an explainer on hover. Used on
+every field in the add/edit rule form.
+
+**Icon**
+```css
+width: 13px; height: 13px;
+border: 1px solid #c3c7cd;
+border-radius: 50%;
+font-size: 8px;          /* fa-info */
+color: #9ca3af;
+cursor: help;
+```
+Hover: border `#6b7280`, glyph `#374151`.
+
+**Tooltip** — same light card as above, at `width: 230px`, `font-size: 11px`,
+`font-weight: 500`, `color: #374151`, `line-height: 1.45`. Opens **above** the
+icon, centred, with a bordered arrow.
+
+Two things that will break it:
+- It must reset `text-transform` and `letter-spacing`. Table headers are uppercase
+  and letter-spaced, and the tooltip inherits both otherwise.
+- Any ancestor with `overflow: hidden` will clip it regardless of `z-index`. Cards
+  containing help icons must not set it.
+
 ---
 
 ### Modals
@@ -574,14 +600,87 @@ z-index: 296;
 
 Toolbar elements left to right:
 1. **Active Rule** — label outside + button showing current rule name + chevron
-2. **Quick Select** — label outside + select dropdown (— None —, Maximum Profit, Minimum Cost, OEM Dealer)
-3. **Print** — button with dropdown (Print Available Prices, List Price Report, Unavailable Part List, Cost Price Report*, Purchase Order Summary*)
-4. **View** — label outside + grid/list icon toggle
-5. **List Settings** — gear icon, only visible in list view
+2. **Quick Select** — label outside + two toggle buttons (Maximum Profit, Minimum Cost). *Replaced the dropdown. OEM Dealer removed — clicking the OEM supplier column header already does this.*
+3. **Clear Selections** — beside Quick Select. Disabled until a line is selected
+4. **Filter legend** — Dealer Part Match, ETD Alert, Comments, Images, Donor Part
+5. **View** — label outside + grid/list icon toggle
+6. **List Settings** — gear icon, only visible in list view
+
+**Print** has moved out of the toolbar and now sits with **Cancel Request** and **Save** in the quote actions group.
 
 *Greyed out until conditions are met.
 
 **Active Rule dropdown:** `width: 680px`, 2-column card grid, brand green radio indicators, light card style matching Info page.
+
+### Quick Select Toggles
+
+Two-state buttons. The applied state must be obvious at a glance.
+
+| State | Background | Border | Text |
+|---|---|---|---|
+| Resting | `#fff` | `#d1d5db` | `#374151` |
+| Hover | `#f3f4f6` | `#9ca3af` | `#374151` |
+| **Applied** | `#16a34a` | `#15803d` | `white` + white tick |
+
+`height: 30px`, `padding: 0 12px`, `border-radius: 4px`, `font-size: 12px`, `font-weight: 600`
+
+Clicking an applied button clears it. Selecting the other switches. Changing the
+margin rule **re-runs** an active Quick Select under the new rule, so the button
+never claims a selection that is no longer true. Manual selections are never
+disturbed by a rule change.
+
+---
+
+## 10b. Active Margin Rule Card
+
+A standalone bordered card so the applied rule stands apart from the page.
+
+```css
+background: #fff;
+border: 1px solid #4ade80;   /* green-400 — the only green-bordered surface */
+padding: 10px 12px;
+margin: 0 24px 10px;
+border-radius: 0;
+```
+
+### Status control
+
+One control that both confirms the rule and opens the picker.
+
+```
+[ ✓ MARGIN RULE APPLIED │ Allianz Standard ▾ ]
+```
+
+| Element | Spec |
+|---|---|
+| Button | `#fff`, 1px `#16a34a`, 4px radius, 32px tall |
+| Hover | `#f3f4f6` bg, `#15803d` border |
+| Tick | `#16a34a`, 15px |
+| Label | 10px/700, `#15803d`, uppercase, 0.7px tracking |
+| Divider | 1px × 14px, `#22c55e` |
+| Rule name | 13px/800, `#16a34a` |
+| Chevron | 12px, `#16a34a` |
+
+### Part type indicators
+
+Rates sit beside the picker as **coloured dots with grey text** — a legend, not
+controls. No container, no hover, `cursor: default`.
+
+| Element | Spec |
+|---|---|
+| Dot | 7px circle, `::before` |
+| Type label | 11px/600, `#6b7280` |
+| Value | 11px/700, `#374151` |
+| Gap | 16px between entries |
+
+Dot colours use the **Part Type Colours** already defined in section 2, matching
+the grid's column type strips.
+
+> **Do not use pills here.** The pill shape reads as clickable and was rejected
+> for that reason.
+
+**No-match prompt removed.** The previous *"No margin rule set up for this insurer"*
+prompt is gone. A fallback rule always applies, so the user is never blocked.
 
 ---
 
@@ -759,6 +858,86 @@ Destructive modals may show a small red circle icon (`background: #fef2f2; strok
 
 ---
 
+## 16b. Anchored Popover (Modify)
+
+**Replaces the full-screen modal** for per-cell pricing edits. Anchored to the
+cell being edited rather than centred on the screen.
+
+### Container
+```css
+width: 320px;
+max-width: calc(100vw - 16px);
+background: #fff;
+border: 1px solid #d1d5db;
+border-radius: 6px;
+box-shadow: 0 8px 24px rgba(0,0,0,.14);
+z-index: 800;
+```
+
+### Positioning
+
+1. Below the cell, centred, 1px overlap — **if it fits at full height**
+2. Otherwise **above** the cell, at full height
+3. Only if it fits neither: cap the body and scroll, on whichever side has more room
+
+> Never scroll internally when flipping above would avoid it. A scroll inside a
+> short panel was the main complaint about the previous behaviour.
+
+Closes on outside click or Escape. Re-anchors on scroll and resize. Hover tooltips
+are suppressed while open, so the two never stack.
+
+Opens pre-selected on the pricing method **currently applied to that cell** — an
+existing override if one exists, otherwise the active margin rule.
+
+### Form fields
+
+No section headings. Labels sit **inline** to the left in a fixed 92px column, so
+both fields align.
+
+```
+Display Format   [ Type or select...        ⌄ ]
+Part Number      [ 86510-G3700                ]
+```
+
+Combo fields carry a 12px `#6b7280` caret inside the field on the right, with
+`padding-right: 26px` so text cannot run under it, and `pointer-events: none` so
+clicking it still opens the list.
+
+### Pricing method list
+
+Five options as a tight radio list. **Chrome only on the selected row.**
+
+| | Resting | Selected |
+|---|---|---|
+| Background | transparent | `#f0fdf4` |
+| Border | transparent | `#86efac` |
+| Label | 11px/500 `#374151` | same, weight 600 |
+| Figures | `#c3c7cd` | `#374151` |
+
+Row padding `3px 7px`, 1px gap. All value fields **62px**, right-aligned. No
+trailing `%` — the labels already say it, and it pushed those rows out of
+alignment with the `$` rows.
+
+### Stepper
+
+▲▼ to the left of the field on percentage methods.
+
+```css
+width: 15px; height: 9px;
+background: #f9fafb;
+border: 1px solid #d1d5db;
+```
+Steps by 10, clamped to the field's min/max, disables with its row. Fields also
+carry `step="10"` so keyboard arrows match.
+
+### Scope
+
+An override applies to **one cell only** — that part, that supplier — keyed on
+`partId|supplierId`. It outranks the margin rule, so a later rule change does not
+disturb it. **Reset** clears the override and returns the cell to the rule.
+
+---
+
 ## 17. Sub-Nav Count Pill — Unread Treatment
 
 Used on Images and Documents tabs to indicate unseen content. The pill sits inline after the tab label.
@@ -875,8 +1054,118 @@ Hover over a supplier response dot (coloured circle in the grid header) to see a
 ### Part No. Match (Flame)
 Green triangle (`#16a34a`) in the top-right corner of a price cell. Contains an inline SVG flame icon (no FA4 equivalent). Tooltip: "Part No. Match".
 
+### Chip stroke rule
+
+**Every chip carries a 1px stroke one step darker than its own fill.** This keeps
+the set visually even — no chip should read as heavier than its neighbours.
+
+| Chip | Fill | Stroke |
+|---|---|---|
+| Dealer Part Match | `#16a34a` | `#15803d` |
+| ETD Alert | `#d97706` | `#b45309` |
+| Comment | `#d1d5db` | `#9ca3af` |
+| Image | `#0891b2` | `#0e7490` |
+| Donor Part | `#1d4ed8` | `#1e40af` |
+
+> The comment chip briefly used a `#4b5563` stroke, inherited from the `fa-exclamation`
+> chip it replaced. That dark outline was needed to hold a thin glyph's shape; a
+> solid speech bubble does not need it, and it made the chip the heaviest in the
+> set. Do not reintroduce it.
+
+Legend swatches use the same fills and strokes as the cell chips, at 12px with
+`box-sizing: border-box` so the stroke does not change the footprint.
+
+### Comment (Speech Bubble)
+
+`fa-comment` in a grey chip. Shown when the line carries a **comment only** —
+photos have their own chip.
+
+| | |
+|---|---|
+| Size | 16×16, 2px radius |
+| Background | `#d1d5db` |
+| Border | `1px solid #9ca3af` |
+| Icon | `fa-comment`, 8px, `#4b5563` |
+
+*Changed from `fa-exclamation`, which read as a warning rather than a message.*
+
+The comment chip is the only one with an unsaturated fill and a dark icon rather
+than a white one. That is deliberate — comment is the quietest signal in the
+priority order below.
+
+### Image (Camera)
+
+`fa-camera` in a cyan chip. Shown when a supplier has attached a photo to the
+quote line.
+
+| | |
+|---|---|
+| Size | 16×16, 2px radius |
+| Background | `#0891b2` |
+| Border | `1px solid #0e7490` |
+| Icon | `fa-camera`, 8px, white |
+
+*Cyan rather than another blue: Donor Part is `#1d4ed8` and the two pills sit
+adjacent in the legend, where two blues would be hard to separate at pill size.*
+
+### ETD Alert (Clock)
+
+`fa-clock-o` in an amber chip. Shown when the supplier's ETD is at or beyond the
+**Long ETD** threshold set in Settings.
+
+| | |
+|---|---|
+| Size | 16×16, 2px radius |
+| Background | `#d97706` |
+| Border | `1px solid #b45309` |
+| Icon | `fa-clock-o`, 9px, white |
+
+### Stacking order and priority
+
+Chips stack vertically in the top-right corner in this order:
+
+| | | Why |
+|---|---|---|
+| 1 | Dealer Part Match **or** Donor Part | Sourcing — changes which option you would pick |
+| 2 | ETD Alert | Operational — changes whether you *can* pick it |
+| 3 | Image | Evidence — helps verify the part |
+| 4 | Comment | Context — usually qualifies the above |
+
+Match and Donor are mutually exclusive in practice and occupy the same slot, so
+the practical maximum is four.
+
+**Show the chips; do not rely on filter highlighting alone.** Measured across a
+full quote, no cell carried more than 2 chips and 52% carried none — the vertical
+stack fits four in a 76px cell. Hiding them would remove passive discovery: a user
+comparing prices would have no signal that an option carries a six-week ETD unless
+they thought to apply a filter they had no reason to suspect applied.
+
+If a cell ever exceeds four, cap at three plus a subtle `+1` rather than shrinking
+the chips.
+
 ### Donor Part Match (Blue Star)
 Blue triangle (`#1d4ed8`) in the top-right corner. Contains a ★ character. Tooltip: "Donor Part Match".
+
+---
+
+## 21b. Empty States
+
+Match the section they sit in — white card, not a bare outline.
+
+```css
+background: #fff;
+border: 1px solid #d1d5db;
+border-radius: 0;
+padding: 32px 20px;
+text-align: center;
+```
+
+| Element | Spec |
+|---|---|
+| Icon | `fa-file-o`, 22px, `#9ca3af` (never an emoji) |
+| Heading | 14px/700, `#374151` |
+| Body | 12px, `#9ca3af` |
+| Action | primary green `#16a34a`, 12px/700, `8px 20px`, 4px radius |
 
 ---
 
@@ -908,3 +1197,118 @@ Estimators see margin rules in read-only mode. Edit controls (pencil, Add Rule b
 When `SITE_DONOR_ENABLED = true` a Donor Parts row appears in the Margin Settings rule form below the Recycled row. It maps the donor parts scheme to an insurer (Allianz / Suncorp / IAG / Not mapped).
 
 Donor part matches are shown in the price grid with a blue corner triangle indicator (see Section 21).
+
+---
+
+## 25. Settings — Additions
+
+### Price Grid Display
+
+Dropdown controlling what shows beneath the price on every Check Price cell:
+**Profit** ($), **Margin** (%), or **Hide**. Applies to the whole grid at once.
+
+### Settlement Discounts
+
+| Setting | Default |
+|---|---|
+| Apply Settlement Discounts | **No** |
+| Show Settlement Discounts to Dealers | **No**, and dependent on the above |
+
+When off, Invoice Cost and Settlement Discount are hidden everywhere — cell, price
+hover, list panel and supplier hover.
+
+### ETD Alerts — not configurable
+
+There is **no ETD setting**. Alerts are always on, with a fixed threshold of
+**1 Week**: any supplier quoting an ETD at or beyond that is flagged.
+
+The threshold compares against the supplier-side ETD list, in order:
+
+`Same Day · 1-2 Days · 2-3 Days · 4-5 Days · 1 Week · 2-3 Weeks · 4-6 Weeks · 6 Weeks+ · NLA`
+
+Because it is an ordinal list rather than free text, "longer than X" is a position
+comparison. NLA ranks last, so an unavailable part is always flagged.
+
+*A configurable version was built and removed. Making the alert optional meant a
+user could hide the chips entirely, losing the passive signal that a part is weeks
+away — the one indicator most likely to cause a problem discovered too late.*
+
+### Dependent settings pattern
+
+Where a setting is meaningless without its parent:
+
+```css
+opacity: 0.45;
+cursor: not-allowed;
+```
+Label greys to `#9ca3af`, neither option reads as selected, and the help text
+swaps to *"Available once {parent} is on."*
+
+### Part type acceptance
+
+Each part type row in a rule carries an **Accepted** Yes/No control, separate from
+its pricing method.
+
+> Acceptance and pricing are independent questions. *Does this insurer accept this
+> part type?* drives the flag. *What do we charge if it gets used anyway?* always
+> needs an answer. "Not Acceptable" was previously an option in the pricing method
+> dropdown, which meant choosing it left nothing to price with.
+
+- Setting **No** auto-fills **Markup on Cost at 20%**, which stays editable
+- Setting it back to **Yes** leaves the pricing alone — the user may have tuned it
+- Stored as `notAccepted: ['Recycled','Reconditioned']` on the rule
+
+**On Check Price**, refused part types appear as red pills in the existing
+exceptions strip, and selecting one raises a confirm dialog — acknowledged **once
+per part line**, not once per quote. The part still prices normally.
+
+*Temporary home. Phase 2 introduces a Part Restrictions section; acceptance is the
+same kind of statement and should fold into it. See `phase-2-notes.md`.*
+
+### Yes/No controls — use one pattern
+
+Settings uses **one** Yes/No component: a pair of radio-style buttons with a green
+ring and `#f0fdf4` fill when selected.
+
+Do not introduce sliding toggles. A slider communicates on/off but leaves the
+values implicit; the radio pair states both, and handles disabled and
+indeterminate states — which dependent settings rely on.
+
+### Rule form validation
+
+Mapping an insurer already held by another rule **blocks the save**:
+
+> ⚠ "NRMA Insurance" is already mapped to "NRMA Standard" - remove it from that
+> rule first, or map a different insurer here.
+
+Amber `#d97706`, 11px, driven by live state so it clears the moment the insurer is
+removed. Save stays disabled while any conflict exists, and the footer names the
+insurer.
+
+### Section count pills
+
+`2 provided`, `5 rules` — white fill, `#d1d5db` border. These sit directly on the
+grey page rather than inside a card, so the lighter `#e5e7eb` border used
+elsewhere is too faint.
+
+---
+
+## 26. Principles Added by This Work
+
+1. **A green border marks the one rule-bearing surface on a screen.** It is not a
+   general card treatment.
+2. **Rate indicators are a legend, not controls** — coloured dot, bare text, no
+   container, no hover. Pills read as clickable.
+3. **Prefer flipping a popover over scrolling it.** Anchored panels open above
+   rather than making the user scroll inside a short panel.
+4. **Dim the figures, not the copy.** In a list of options, unselected rows keep
+   readable labels; only their values recede.
+5. **An empty field shows its placeholder, which `color:` does not reach.** Style
+   `::placeholder` separately or it will not dim with the rest of its row.
+6. **Every chip carries a stroke one step darker than its own fill.** No chip
+   should read as heavier than its neighbours.
+7. **Passive signals beat filters for discovery.** A filter answers a question the
+   user already has; a chip tells them there is a question worth asking.
+8. **A control that asserts state must stay true.** If the underlying data
+   changes, either re-run the action or drop the state — never leave a button
+   claiming something that no longer holds.
