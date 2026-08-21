@@ -179,6 +179,24 @@ Section card content: `padding: 20px` or `padding: 24px`
 | Buttons (secondary) | `1px solid #d1d5db` | `4px` |
 | Inputs | `1px solid #d1d5db` | `4px–5px` |
 | Badges / pills | none | `10px–20px` (fully rounded) |
+
+### Radius scale
+
+Cards are square. Everything steps up from there — nothing should look softer
+than the surface it sits on.
+
+| Radius | Applies to |
+|---|---|
+| `0` | Cards, panels, section containers |
+| `2px` | Cell indicator chips |
+| `3px` | Buttons, inputs, selects, badges, small pills |
+| `4px` | Popovers, modals — one step softer than the controls inside them |
+| `50%` / `999px` | Radio dots, icon circles, toggle tracks, legend pills |
+
+> Controls were previously 4px and containers 6px. Both were reduced once cards
+> were squared — at the old values the buttons visibly stood out against the
+> surfaces holding them. Fully-round elements are round by intent, not by scale,
+> and are unaffected.
 | Small badges (SYSTEM, DEFAULT) | none | `3px` |
 | Modals | none | `8px` |
 | Tooltips | `1px solid #e5e7eb` | `6px` |
@@ -206,7 +224,7 @@ Section card content: `padding: 20px` or `padding: 24px`
 background: #16a34a;
 color: white;
 border: none;
-border-radius: 4px;
+border-radius: 3px;
 padding: 7px 16px;
 font-size: 12px;
 font-weight: 700;
@@ -219,7 +237,7 @@ Hover: `background: #15803d`
 background: white;
 color: #374151;
 border: 1px solid #d1d5db;
-border-radius: 4px;
+border-radius: 3px;
 padding: 7px 12–14px;
 font-size: 12px;
 font-weight: 600;
@@ -232,7 +250,7 @@ Hover: `background: #f9fafb`
 background: #fef2f2;
 color: #ef4444;
 border: 1px solid #fecaca;
-border-radius: 4px;
+border-radius: 3px;
 padding: 4–7px 7–14px;
 font-size: 11–12px;
 font-weight: 600–700;
@@ -269,7 +287,7 @@ All tooltips use a light card style. **Do not use dark backgrounds.**
 ```css
 background: #fff;
 border: 1px solid #e5e7eb;
-border-radius: 6px;
+border-radius: 4px;
 padding: 10px 12px;
 box-shadow: 0 8px 24px rgba(0,0,0,.10);
 width: 230px;
@@ -331,7 +349,7 @@ Two things that will break it:
 
 ```css
 overlay: rgba(0,0,0,.45), position: fixed, inset: 0, z-index: 800
-modal: background: white, border-radius: 8px, width: 480px, max-width: 95vw
+modal: background: white, border-radius: 4px, width: 480px, max-width: 95vw
 shadow: 0 20px 60px rgba(0,0,0,.25)
 ```
 
@@ -347,7 +365,7 @@ Dropdowns (rule picker, print menu, supplier info) use:
 ```css
 background: #fff;
 border: 1px solid #d1d5db;
-border-radius: 6px;
+border-radius: 4px;
 box-shadow: 0 12px 36px rgba(0,0,0,.15);
 z-index: 400–500;
 ```
@@ -367,7 +385,7 @@ transform: translateX(-50%);
 background: #1a1a2e;
 color: white;
 padding: 12px 24px;
-border-radius: 8px;
+border-radius: 4px;
 font-size: 13px;
 font-weight: 600;
 box-shadow: 0 8px 24px rgba(0,0,0,.3);
@@ -429,7 +447,7 @@ Left position: checked `21px`, unchecked `3px`
 All detail cards follow the same structure:
 
 ```html
-<div style="border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; background: #fff">
+<div style="border: 1px solid #e5e7eb; border-radius: 4px; overflow: hidden; background: #fff">
   <!-- Header -->
   <div style="background: #f8fafc; padding: 11px 20px; border-bottom: 1px solid #e5e7eb">
     <span style="font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.6px">
@@ -622,7 +640,7 @@ Two-state buttons. The applied state must be obvious at a glance.
 | Hover | `#f3f4f6` | `#9ca3af` | `#374151` |
 | **Applied** | `#16a34a` | `#15803d` | `white` + white tick |
 
-`height: 30px`, `padding: 0 12px`, `border-radius: 4px`, `font-size: 12px`, `font-weight: 600`
+`height: 30px`, `padding: 0 12px`, `border-radius: 3px`, `font-size: 12px`, `font-weight: 600`
 
 Clicking an applied button clears it. Selecting the other switches. Changing the
 margin rule **re-runs** an active Quick Select under the new rule, so the button
@@ -653,7 +671,7 @@ One control that both confirms the rule and opens the picker.
 
 | Element | Spec |
 |---|---|
-| Button | `#fff`, 1px `#16a34a`, 4px radius, 32px tall |
+| Button | `#fff`, 1px `#16a34a`, 3px radius, 32px tall |
 | Hover | `#f3f4f6` bg, `#15803d` border |
 | Tick | `#16a34a`, 15px |
 | Label | 10px/700, `#15803d`, uppercase, 0.7px tracking |
@@ -820,7 +838,7 @@ display: flex; align-items: center; justify-content: center;
 ### Container
 ```css
 background: #fff;
-border-radius: 4px; /* NOT 8px */
+border-radius: 3px; /* NOT 8px */
 box-shadow: 0 20px 60px rgba(0,0,0,0.25);
 overflow: hidden;
 ```
@@ -869,7 +887,7 @@ width: 320px;
 max-width: calc(100vw - 16px);
 background: #fff;
 border: 1px solid #d1d5db;
-border-radius: 6px;
+border-radius: 4px;
 box-shadow: 0 8px 24px rgba(0,0,0,.14);
 z-index: 800;
 ```
@@ -1014,7 +1032,7 @@ font-size: 8px;
 font-weight: 800;
 ```
 
-**Download button:** `border: 1px solid #e5e7eb; border-radius: 4px; padding: 5px 12px; font-size: 11px; font-weight: 600; color: #374151` — not a plain text link.
+**Download button:** `border: 1px solid #e5e7eb; border-radius: 3px; padding: 5px 12px; font-size: 11px; font-weight: 600; color: #374151` — not a plain text link.
 
 ---
 
@@ -1165,7 +1183,7 @@ text-align: center;
 | Icon | `fa-file-o`, 22px, `#9ca3af` (never an emoji) |
 | Heading | 14px/700, `#374151` |
 | Body | 12px, `#9ca3af` |
-| Action | primary green `#16a34a`, 12px/700, `8px 20px`, 4px radius |
+| Action | primary green `#16a34a`, 12px/700, `8px 20px`, 3px radius |
 
 ---
 
