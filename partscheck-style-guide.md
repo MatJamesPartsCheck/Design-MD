@@ -48,19 +48,40 @@ These are stock Tailwind values, used for pills, badges, selected states and bac
 | `gray-300` | `#d1d5db` | Stronger borders |
 | `gray-400` | `#9ca3af` | Placeholder text, secondary labels, bullet points |
 | `gray-500` | `#6b7280` | Body text, descriptions, tooltip labels |
-| `gray-600` | `#4b5563` | Comment chip icon, Parallel type text. **Not for card headers** — those are `gray-500` |
+| `gray-600` | `#4b5563` | Parallel type text, secondary icons. **Not for card headers** — those are `gray-500` |
 | `gray-700` | `#374151` | Primary body text |
 | `gray-900` | `#111827` | Headings, strong emphasis. Not for form field values — those are `gray-700` |
 
+### Part Types
+
+**Part types are always listed in this order**, everywhere they appear — the
+Check Price grid, the margin rule dropdown, the Settings list and the rule form:
+
+1. OEM
+2. Parallel
+3. Aftermarket
+4. Reconditioned
+5. Recycled
+
+> The order mirrors the Check Price grid, which is where estimators spend their
+> day. If Settings lists them differently, someone reading a rule has to
+> re-map five rows against what they know from the grid.
+
+All five are always present. Parallel and Recycled are distinct types and must
+never be merged into a single "Used / Parallel" row.
+
 ### Part Type Colours
 
-| Type | Hex |
-|---|---|
-| OEM | `#2563eb` | blue-600 |
-| Aftermarket (AftM) | `#a855f7` | purple-500 |
-| Used / Recycled | `#84cc16` | lime-500 |
-| Reconditioned (Reco) | `#f59e0b` | amber-500 |
-| Parallel | `#6b7280` | gray-500 |
+In the standard order. The third column is the readable text shade — the true
+colours fail AA as text on white, so they are used for dots, bars and fills only.
+
+| Type | Hex | Tailwind | As text |
+|---|---|---|---|
+| OEM | `#2563eb` | blue-600 | `#1d4ed8` |
+| Parallel | `#6b7280` | gray-500 | `#4b5563` |
+| Aftermarket (AftM) | `#a855f7` | purple-500 | `#7e22ce` |
+| Reconditioned (Reco) | `#f59e0b` | amber-500 | `#b45309` |
+| Recycled | `#84cc16` | lime-500 | `#4d7c0f` |
 
 ### Line Status Colours
 
@@ -79,7 +100,7 @@ All values are stock Tailwind — no custom hexes.
 | Modified | Line modified from its original state | `orange-200` `#fed7aa` — `--line-accent-modified-bg` | `orange-50` `#fff7ed` — `--line-accent-modified-bg-subtle` |
 | Optional | Optional extra part added by the supplier | `green-200` `#bbf7d0` — `--line-accent-optional-bg` | `green-50` `#f0fdf4` — `--line-accent-optional-bg-subtle` |
 
-These are line/row backgrounds only. Do not apply to buttons, pills or badges — those have their own colour system. Text colour on top of these backgrounds stays at the standard grid text colours (`#111` / `#374151`) for legibility; do not tint the text to match the background. When a line is in multiple states, priority order is: **Removed → Modified → Supplier → Additional → Optional** (removed always wins because it signals the strongest information, that the line no longer counts toward the quote).
+These are line/row backgrounds only. Do not apply to buttons, pills or badges — those have their own colour system. Text colour on top of these backgrounds stays at the standard grid text colours (`#111827` / `#374151`) for legibility; do not tint the text to match the background. When a line is in multiple states, priority order is: **Removed → Modified → Supplier → Additional → Optional** (removed always wins because it signals the strongest information, that the line no longer counts toward the quote).
 
 **View-specific application:**
 
@@ -140,7 +161,7 @@ System font stack — no external font loaded. Clean, fast, neutral.
 
 ### Text Colour Conventions
 
-- **Headings:** `#111`
+- **Headings:** `#111827`
 - **Primary body:** `#374151`
 - **Secondary / descriptions:** `#6b7280`
 - **Placeholders / metadata:** `#9ca3af`
@@ -569,9 +590,9 @@ Columns: Supplier | Comments | Qty | Type | Cost | Sell | Margin | Profit | Acti
 
 **Supplier rows:** `border-bottom: 1px solid #ebebeb`  
 Selected row: `background: #f0fff4`  
-Selected values: bold, `color: #111`
+Selected values: bold, `color: #111827`
 
-**Line status backgrounds:** In the List View, line status colours are applied at two levels — the part-description header row uses the strong `-200` shade (`--line-accent-<status>-bg`), and every supplier price row grouped beneath uses the softer `-50` shade (`--line-accent-<status>-bg-subtle`). Both must reflect the same status so the whole group reads as one unit. See §2 Line Status Colours for the full state map. When a supplier row is also selected, the selected background (`#f0fff4`) is overridden by the status colour — status wins for the row fill, and bolding + `color: #111` on the values still indicates selection.
+**Line status backgrounds:** In the List View, line status colours are applied at two levels — the part-description header row uses the strong `-200` shade (`--line-accent-<status>-bg`), and every supplier price row grouped beneath uses the softer `-50` shade (`--line-accent-<status>-bg-subtle`). Both must reflect the same status so the whole group reads as one unit. See §2 Line Status Colours for the full state map. When a supplier row is also selected, the selected background (`#f0fff4`) is overridden by the status colour — status wins for the row fill, and bolding + `color: #111827` on the values still indicates selection.
 
 **SELECT button:** `border: 1px solid #ccc`, `background: #fff`, `border-radius: 3px`  
 **SELECTED button:** `background: #16a34a` (brand-green / Tailwind `green-600`), `color: white`  
@@ -652,7 +673,7 @@ z-index: 298;
 ```
 
 **Stat label:** `font-size: 10px; color: #6b7280; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px`  
-**Stat value:** `font-size: 22px; font-weight: 700; color: #111`  
+**Stat value:** `font-size: 22px; font-weight: 700; color: #111827`  
 **Your Profit value:** `color: #16a34a`
 
 **Inline badge pills (below values):**
@@ -894,7 +915,7 @@ Use `#16a34a` for active states, confirmation actions, profit values and brand m
 Detail cards always follow the same structure: `#f8fafc` header with uppercase label, `1px solid #e5e7eb` border, `6px` radius, white content area. The Rule Summary card is the exception — it uses a `4px solid #1f2937` left accent to signal it is a reference panel, not an input section.
 
 **8. Typography hierarchy is simple.**  
-Headings are `#111`, body is `#374151`, secondary is `#6b7280`, metadata is `#9ca3af`. Green text is brand green `#16a34a` only.
+Headings are `#111827`, body is `#374151`, secondary is `#6b7280`, metadata is `#9ca3af`. Green text is brand green `#16a34a` only.
 
 **9. Labels sit outside controls.**  
 Dropdowns and selects always have their label as plain text to the left (e.g. "Active Rule:", "Quick Select:", "View:") — never inside the control as a default option. Exception: the Quick Select `— None —` placeholder which indicates an unset state.
@@ -1478,6 +1499,156 @@ insurer.
 `2 provided`, `5 rules` — white fill, `#d1d5db` border. These sit directly on the
 grey page rather than inside a card, so the lighter `#e5e7eb` border used
 elsewhere is too faint.
+
+---
+
+## Get Price — Quote Bar
+
+One white card with a green outline holding every decision that applies to the
+whole quote. Sections are separated by dividers, not by their own borders.
+
+```
+Quote Type: ⓘ ◉ Competitive ○ Direct │ ✓ MARGIN RULE APPLIED │ Allianz ⌄ │ Prices Needed By: [9:30][10:00][11:00][More…] │ Today, 11:00am  18 parts to 7 suppliers  [SUBMIT QUOTE]
+```
+
+| Element | Spec |
+|---|---|
+| Bar | `#fff`, `1px solid #4ade80`, `3px` radius, `align-items: center`, wraps |
+| Divider | `::before` pseudo-element, `1px × 30px`, `#e5e7eb`, vertically centred |
+| Group label | `12px / 600` `#374151`, sentence case with a colon |
+| Quote type | Radio pair, `accent-color: #16a34a` |
+| Margin rule | 32px, `1px solid #16a34a`, `3px` radius |
+| Time slot | 32px, `13px / 700`, `#d1d5db` border |
+| Slot selected | White fill, `#16a34a` border and text, green tick |
+| More… | 32px, `1px dashed #d1d5db`, `#374151` |
+| Resolved time | `19px / 800` `#16a34a` |
+| Summary | `12px / 600` `#6b7280`, figures `14px / 800` `#111827` |
+| Submit | 30px, `#16a34a`, no stroke |
+
+**The divider is a fixed 30px pseudo-element, not a border.** A `border-left`
+takes the height of whatever section it sits beside, so the dividers ended up
+different lengths. A pseudo-element is the same height regardless.
+
+**Breakpoints.** At `1240px` the groups take a grid with a shared baseline and
+the summary section drops to its own row; at `760px` everything stacks. The bar
+carries its own vertical padding so a wrapped row never sits flush against the
+edge.
+
+### Urgency
+
+Anything inside three hours is urgent, and the slots enforce it rather than
+warning about it:
+
+| Timeframe | Slots offered |
+|---|---|
+| Normal | +3h, +3.5h, +4h, +4.5h |
+| Urgent | +30m, +1h, +1.5h, +2h |
+
+Urgent turns the time area amber — selected slot `#d97706`, resolved time
+`#b45309` — and shows a `⚠ URGENT` pill. Changing the Timeframe regenerates the
+four slots immediately.
+
+### Direct Purchase
+
+Selecting Direct Purchase swaps **Prices Needed By** for **Supply Date**: the
+time slots and More… hide, a date field appears, and the summary names the
+supplier instead of counting them — *"18 parts to West End Hyundai"*. With no
+supplier chosen it reads *"no supplier selected"* in grey.
+
+---
+
+## Get Price — Cards
+
+Three fixed-height cards: Parts to Quote, Suppliers, Photos and Comments.
+
+| Element | Spec |
+|---|---|
+| Card height | `560px`, set by `--card-h` |
+| Card body | `overflow-y: auto` — each card scrolls on its own |
+| Table headings | `position: sticky; top: 0` inside the scrolling body |
+| Column widths | Three equal thirds |
+
+**Cards hold one height and scroll their own body**, so the three stay level and
+the page does not grow with the longest list.
+
+### Parts to Quote
+
+Part type columns are hidden by default behind an **Edit types** toggle in the
+card header. When shown, the table takes a `430px` minimum width and the card
+scrolls sideways — the four 38px type columns would otherwise crush the
+description and the checkboxes would sit over the text.
+
+The `<col>` elements collapse to zero width when hidden as well as the cells;
+with `table-layout: fixed` the colgroup reserves width even for hidden cells, so
+hiding only the cells leaves the columns' width behind.
+
+**Comments sit under their part, always visible.** A part with a comment shows
+its text; a part without shows *"Add comment"* in `#c3c7cd`. Clicking into a
+description opens that row's comment field. There is no chip and no hover
+reveal — a comment is its own indicator, so an icon repeating that was noise.
+
+The divider closes the part-and-comment pair rather than sitting between them,
+otherwise the comment reads as belonging to the next part.
+
+### Suppliers
+
+Part type is shown as a coloured dot beside the type name: `7px` circle in the
+true part-type colour, with the name in `#374151` `12px / 600`. The dot carries
+the colour so the text does not have to, which keeps it readable.
+
+---
+
+## Get Price — Show Details
+
+A green text link in the quote header, not a button — it sits in a line of plain
+text and a bordered control would interrupt it.
+
+| Element | Spec |
+|---|---|
+| Toggle | `12px / 700` `#16a34a`, no fill or border, chevron rotates when open |
+| Panel | `#fff`, `1px solid #e5e7eb`, two columns, `align-items: stretch` |
+| Section heading | `#f8fafc` strip, `1px solid #e5e7eb` beneath, `11px / 700` `#6b7280` uppercase — identical to a card header |
+| Field label | `11px / 600` `#6b7280` |
+| Field value | `12px / 700` `#374151`, borderless, transparent |
+| Field hover | `border-bottom: #d1d5db` |
+| Field focus | `border-bottom: #16a34a` |
+| Required marker | `*` in `#ef4444` |
+
+**Two areas**: Quote on the left (Quote Number, Claim Number), Vehicle on the
+right in the standard order — Registration, VIN, Make, Model, Model Number,
+Body, Colour, Transmission, Series, Month, Year. Make, Body, Month and Year are
+dropdowns.
+
+**Fields are borderless.** They read as text until touched, matching the part
+description on the grid. A panel of stroked boxes reads as a form to be filled
+in rather than details to be checked.
+
+**Required:** Quote Number, VIN, Make, Model, Month, Year. Flagged on blur, not
+while typing. Submitting with one empty opens the panel and focuses the first
+missing field — otherwise the message points at something collapsed.
+
+Editing Make, Model, Year, Registration or Quote Number updates the header line
+above.
+
+---
+
+## Sticky Navigation
+
+| Element | Spec |
+|---|---|
+| `.nav-top` | `position: sticky; top: 0; z-index: 400` |
+| `.nav-sub` | `position: sticky; top: var(--nav-h); z-index: 399` |
+
+**The sub nav's offset is measured, never hard-coded.** `syncNavOffsets()` reads
+the top nav's height on load and on resize and writes it to `--nav-h`.
+
+> Hard-coded offsets — `62px`, `137px`, `97px` — are what detached the headers
+> when the layout changed. A measured value survives a nav that grows.
+
+**Nothing above a sticky element may set `overflow`.** An ancestor with
+`overflow: hidden`, `auto` or `scroll` silently disables sticky positioning, with
+no error and no visible cause.
+
 
 ---
 
