@@ -739,8 +739,12 @@ Matched pill and sort to the top, but stay in the single list.
 > justified the table, and a group of one with a heading above it is more
 > furniture than the flag needs.
 
-**The "of List" suffix is stripped** from each rate — the column heading already
-says what the percentage refers to.
+**Rate cells show the percentage only.** The pricing method is stripped, whether
+it reads "of List" or "Markup on Cost", with the full value kept as a tooltip.
+
+> The method is a rule-level setting, not a per-rate one, so repeating it in
+> five columns adds nothing. It also overflows: "100% Markup on Cost" runs past
+> the cell and collides with the column beside it.
 
 ### Quick Select Toggles
 
