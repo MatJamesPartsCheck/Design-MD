@@ -48,8 +48,9 @@ These are stock Tailwind values, used for pills, badges, selected states and bac
 | `gray-300` | `#d1d5db` | Stronger borders |
 | `gray-400` | `#9ca3af` | Placeholder text, secondary labels, bullet points |
 | `gray-500` | `#6b7280` | Body text, descriptions, tooltip labels |
+| `gray-600` | `#4b5563` | Comment chip icon, Parallel type text. **Not for card headers** — those are `gray-500` |
 | `gray-700` | `#374151` | Primary body text |
-| `gray-900` | `#111` | Headings, strong emphasis |
+| `gray-900` | `#111827` | Headings, strong emphasis. Not for form field values — those are `gray-700` |
 
 ### Part Type Colours
 
@@ -231,6 +232,64 @@ font-weight: 700;
 cursor: pointer;
 ```
 Hover: `background: #15803d`
+
+**Height is 30px** for every button. There is no second size.
+
+### The three button tiers
+
+Every button is one of these three. A new button picks a tier; it does not
+invent values.
+
+| Tier | Fill | Border | Text | Used for |
+|---|---|---|---|---|
+| **Primary** | `#16a34a` | none | white | The main action on a screen or row — Submit, Save, Apply, Open |
+| **Secondary** | `#fff` | `#16a34a` | `#16a34a` | A choice that is currently applied — Quick Select, selected time slot, active margin rule |
+| **Tertiary** | `#fff` | `#d1d5db` | `#374151` | Neutral actions — Print, Export, Clear Selections, Cancel |
+
+All three are 30px tall with a 3px radius and 12px text.
+
+**Case follows context, not tier.**
+
+| Where | Case | Examples |
+|---|---|---|
+| On the screen | UPPERCASE | OPEN, MODIFY, SUBMIT QUOTE, OPTIONS |
+| Inside a modal or dropdown | Sentence case | Apply, Cancel, Done, Save contact |
+
+> A button sitting in a full screen competes with a grid, a toolbar and a
+> supplier list, so it is set in uppercase to hold its own. A modal has already
+> taken the user's attention — its buttons do not need to shout, and sentence
+> case reads more calmly at the end of a task.
+
+Uppercase is also used for card headers, column headers and section labels. That
+is not a conflict: those are 10–11px at weight 700 in grey, while an uppercase
+button is 12px white on green or bordered. The colour and weight separate them.
+
+**Primary carries no stroke.** A solid green fill needs no outline, and adding
+one only muddies the difference between primary and the green-outlined secondary.
+
+**Hover stays in the control's own colour family.** A green-outlined control
+washes to `#f0fdf4` and deepens its border to `#15803d`; a grey-outlined control
+washes to `#f3f4f6` and deepens to `#9ca3af`. A primary darkens its fill to `#15803d`.
+
+> Hovering a green control to grey reads as it switching off. Keeping the hover
+> in the same family means the control looks like itself under the cursor.
+
+**Tertiary is the default.** Reach for it unless the button commits something
+(primary) or reflects a state that is currently on (secondary). Most buttons on
+a screen should be tertiary; a screen with several primaries has no primary.
+
+**Inline text links are not buttons.** `+ Add parts`, `Show Details`,
+`Edit types` and similar sit inside content rather than beside it: no fill, no
+border, `#16a34a` text. They follow the link pattern, not a button tier.
+
+**An applied state is an outline, not a fill.** Quick Select toggles, the active
+margin rule tag and the selected time slot all share one treatment: white fill,
+`#16a34a` border, `#16a34a` text, green tick.
+
+> These are secondary controls. They record a choice the user can change; they
+> do not commit anything. A solid green fill is reserved for the single primary
+> action on a screen — Submit, Save, Apply. Filling a toggle solid gives it the
+> weight of the primary action and leaves two things competing for the eye.
 
 #### Secondary (Bordered)
 ```css
@@ -628,7 +687,39 @@ Toolbar elements left to right:
 
 *Greyed out until conditions are met.
 
-**Active Rule dropdown:** `width: 680px`, 2-column card grid, brand green radio indicators, light card style matching Info page.
+### Margin rule dropdown
+
+One table, used identically on Check Price and Get Price. Both screens call the
+same renderer, so they cannot drift apart.
+
+| Rule | OEM | Parallel | Aftm | Reco | Recycled |
+|---|---|---|---|---|---|
+| ◉ Allianz Standard `Matched` | 100% | 80% | 70% | 85% | 85% |
+| ○ NRMA Standard | 100% | 80% | 75% | 75% | 70% |
+
+| Element | Spec |
+|---|---|
+| Header row | `10px / 700` uppercase `#6b7280`, `1px solid #e5e7eb` beneath |
+| Rule name | `12px / 700` `#111827`, with a radio indicator |
+| Rate cells | `12px / 600` `#374151`, centred |
+| Row divider | `1px solid #f3f4f6` |
+| Selected row | `#f0fdf4` background, rates in `#166534` |
+| Matched pill | `#dcfce7` fill, `#86efac` border, `#15803d` text, `9px / 800` |
+| Matched row | `#fbfefc` tint, hovering to `#f0fdf4` |
+
+**Rates align down the column.** That is the reason for the table: the rule name
+column is fixed at 38% and every rate sits under its type heading, so two rules
+can be compared at a glance. The previous card grid made that impossible.
+
+**Matched rules are flagged in place, not separated.** They carry a green
+Matched pill and sort to the top, but stay in the single list.
+
+> Splitting matched rules into their own group broke the column alignment that
+> justified the table, and a group of one with a heading above it is more
+> furniture than the flag needs.
+
+**The "of List" suffix is stripped** from each rate — the column heading already
+says what the percentage refers to.
 
 ### Quick Select Toggles
 
@@ -638,7 +729,7 @@ Two-state buttons. The applied state must be obvious at a glance.
 |---|---|---|---|
 | Resting | `#fff` | `#d1d5db` | `#374151` |
 | Hover | `#f3f4f6` | `#9ca3af` | `#374151` |
-| **Applied** | `#16a34a` | `#15803d` | `white` + white tick |
+| **Applied** | `#fff` | `#16a34a` | `#16a34a` + green tick |
 
 `height: 30px`, `padding: 0 12px`, `border-radius: 3px`, `font-size: 12px`, `font-weight: 600`
 
@@ -646,6 +737,25 @@ Clicking an applied button clears it. Selecting the other switches. Changing the
 margin rule **re-runs** an active Quick Select under the new rule, so the button
 never claims a selection that is no longer true. Manual selections are never
 disturbed by a rule change.
+
+---
+
+## 10a. Control strips
+
+A horizontal strip of controls above the content — the Check Price toolbar, the
+Get Price quote bar.
+
+| | |
+|---|---|
+| Fill | `#ffffff` |
+| Corners | square |
+| Border | `#d1d5db` normally |
+| Border | **`#4ade80` if the strip carries the margin rule** |
+| Dividers | 1px `#e5e7eb` between component groups |
+
+**A strip that carries the margin rule takes the green border**, the same as the
+Active Margin Rule Card below. One green-bordered surface per screen: whichever
+surface holds the rule.
 
 ---
 
@@ -1194,7 +1304,7 @@ Each margin rule has an **Applies To** field — a list of debtor names that sho
 - Matching is case-insensitive exact string match
 - A debtor name can only belong to one rule — enforced at UI level via amber conflict prompt
 - Standard Baseline has no debtors and always appears as the fallback
-- The active rule dropdown on Check Price filters to show **Matched** (rules where quote debtor is mapped) and **Other** (everything else)
+- The rule dropdown shows every rule in one table. Rules whose debtors match the quote carry a **Matched** pill and sort to the top; they are not split into a separate group
 
 ---
 
