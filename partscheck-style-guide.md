@@ -285,6 +285,14 @@ Uppercase is also used for card headers, column headers and section labels. That
 is not a conflict: those are 10–11px at weight 700 in grey, while an uppercase
 button is 12px white on green or bordered. The colour and weight separate them.
 
+**One exception: MODIFY inside a price cell.** It is solid `#16a34a` with white
+text, despite being neither the screen's primary action nor an applied state.
+
+> It sits inside a selected price cell, which already carries a green fill and
+> border. A white tertiary button disappears against it, and a green-outlined
+> secondary reads as another applied state rather than an action. Solid green is
+> the only treatment that stays legible in that context.
+
 **Primary carries no stroke.** A solid green fill needs no outline, and adding
 one only muddies the difference between primary and the green-outlined secondary.
 
@@ -715,7 +723,7 @@ same renderer, so they cannot drift apart.
 
 | Rule | OEM | Parallel | Aftm | Reco | Recycled |
 |---|---|---|---|---|---|
-| ◉ Allianz Standard `Matched` | 100% | 80% | 70% | 85% | 85% |
+| ◉ Allianz Standard `MAPPED` | 100% | 80% | 70% | 85% | 85% |
 | ○ NRMA Standard | 100% | 80% | 75% | 75% | 70% |
 
 | Element | Spec |
@@ -725,15 +733,15 @@ same renderer, so they cannot drift apart.
 | Rate cells | `12px / 600` `#374151`, centred |
 | Row divider | `1px solid #f3f4f6` |
 | Selected row | `#f0fdf4` background, rates in `#166534` |
-| Matched pill | `#dcfce7` fill, `#86efac` border, `#15803d` text, `9px / 800` |
-| Matched row | `#fbfefc` tint, hovering to `#f0fdf4` |
+| MAPPED pill | `#dcfce7` fill, `#86efac` border, `#15803d` text, `9px / 800` |
+| Mapped row | `#fbfefc` tint, hovering to `#f0fdf4` |
 
 **Rates align down the column.** That is the reason for the table: the rule name
 column is fixed at 38% and every rate sits under its type heading, so two rules
 can be compared at a glance. The previous card grid made that impossible.
 
-**Matched rules are flagged in place, not separated.** They carry a green
-Matched pill and sort to the top, but stay in the single list.
+**Mapped rules are flagged in place, not separated.** They carry a green
+MAPPED pill and sort to the top, but stay in the single list.
 
 > Splitting matched rules into their own group broke the column alignment that
 > justified the table, and a group of one with a heading above it is more
@@ -1329,7 +1337,7 @@ Each margin rule has an **Applies To** field — a list of debtor names that sho
 - Matching is case-insensitive exact string match
 - A debtor name can only belong to one rule — enforced at UI level via amber conflict prompt
 - Standard Baseline has no debtors and always appears as the fallback
-- The rule dropdown shows every rule in one table. Rules whose debtors match the quote carry a **Matched** pill and sort to the top; they are not split into a separate group
+- The rule dropdown shows every rule in one table. Rules whose debtors match the quote carry a **MAPPED** pill and sort to the top; they are not split into a separate group
 
 ---
 
@@ -1567,13 +1575,13 @@ Three fixed-height cards: Parts to Quote, Suppliers, Photos and Comments.
 
 | Element | Spec |
 |---|---|
-| Card height | `560px`, set by `--card-h` |
-| Card body | `overflow-y: auto` — each card scrolls on its own |
+| Card height | `auto` — cards grow with their content |
+| Card body | `overflow: visible` — the page scrolls, not each card |
 | Table headings | `position: sticky; top: 0` inside the scrolling body |
 | Column widths | Three equal thirds |
 
-**Cards hold one height and scroll their own body**, so the three stay level and
-the page does not grow with the longest list.
+**Cards grow with their content.** They previously held a fixed 560px and
+scrolled internally, which meant three separate scroll areas on one screen.
 
 ### Parts to Quote
 
@@ -1652,6 +1660,236 @@ the top nav's height on load and on resize and writes it to `--nav-h`.
 **Nothing above a sticky element may set `overflow`.** An ancestor with
 `overflow: hidden`, `auto` or `scroll` silently disables sticky positioning, with
 no error and no visible cause.
+
+
+---
+
+## Get Price — Quote Details Card
+
+The quote sits in a thin white card that expands, rather than as loose text
+above the bar.
+
+| Element | Spec |
+|---|---|
+| Card | `#fff`, `1px solid #e5e7eb`, `3px` radius |
+| Header row | `12px 18px`, `cursor: pointer`, hover `#f9fafb` |
+| Details toggle | `11px / 600` `#6b7280`, pushed right with `margin-left: auto` |
+| Group heading | `11px / 700` `#6b7280` uppercase, no fill, no border |
+| Group padding | `16px 18px 18px` |
+
+**The whole header row opens the panel**, not just the toggle — an 11px label is
+a poor target. The panel itself is not clickable: clicking a field you are
+filling in should not collapse it.
+
+**The toggle reads "Details" in both states.** The chevron carries the
+direction, so switching the word as well is redundant.
+
+**Group headings are plain text.** They previously carried a grey strip and a
+bottom border, which repeated the card's own header divider directly above and
+gave two lines in a row.
+
+---
+
+## Get Price — Quote Bar
+
+Four sections, each a heading with its control beneath, in a white card with a
+green outline.
+
+```
+Quote Type: ⓘ   │ Margin Rule Setting:  │ Prices needed by: 3:00pm │ Send: 18 parts to 7
+○ Competitive   │ [✓ MARGIN RULE │ …]   │ [3:00][3:30][4:00] More… │ [ SUBMIT QUOTE ]
+```
+
+| Element | Spec |
+|---|---|
+| Bar | `display: grid`, `#fff`, `1px solid #4ade80` |
+| Section | `12px 30px` |
+| Section heading | `12px / 600` `#6b7280` |
+| Resolved time | `16px / 800` `#16a34a` |
+| Time slot | 28px, `11px`, `3px` radius |
+| More times | 28px, `1px dashed #d1d5db` |
+| Divider | `::before`, 1px, `#e5e7eb` |
+
+**All four headings sit on one line.** Sections are top-aligned; a heading
+sharing a row with a larger value uses `align-items: center`, not `baseline`,
+or the small text drops to the value's baseline.
+
+**Grid, not flex-wrap.** Flex wrapped whichever item did not fit, so the layout
+depended on exact pixel width and reshuffled unpredictably. The grid gives each
+section a named place.
+
+> **The bar cannot hold everything on a 13" screen.** Content needs roughly
+> 1500px against about 1280px available. Something must give — fewer time
+> chips, or a second row. Attempting to force one row produces overlapping text
+> or content outside the card.
+
+---
+
+## Get Price — Parts to Quote
+
+**Two states.** Read mode shows what is there; Edit turns the card into a form.
+
+| | Read mode | Edit mode |
+|---|---|---|
+| Part types | hidden | four columns, 46px, centred |
+| Description | plain text, inert | underlined field |
+| Part number | only where one exists | offered on every part |
+| Comment | only where one exists | prompt on every part |
+| Delete | hidden | trash icon, 24px `#9ca3af` |
+| Header | Clear ⌄ · Deselect all · Done | |
+
+**Part number and comments follow the same rule:** shown when they hold a value,
+offered as a field in edit mode, hidden again on leaving it. Most parts have
+neither.
+
+**Part number reads `Part # 86350-N9010`** — `11px / 400` `#6b7280` for both
+label and value, matching the part number on Check Price.
+
+**Clear is one control with a dropdown**, each option carrying its count —
+`Part numbers 3`, `Comments 6` — and greyed when there is nothing to clear. The
+count is what the confirm used to be: you see the scale before committing.
+
+**Checkboxes need `vertical-align: middle` on the input.** A cell set to
+`middle` governs the content box, not where an inline-block sits in the line;
+a checkbox defaults to the text baseline and reads as bottom-aligned.
+
+---
+
+## Get Price — Suppliers
+
+| Element | Spec |
+|---|---|
+| Columns | `30px │ name (flexible) │ 78px │ 74px │ 92px │ 34px` |
+| Stars | `#f5b301` filled, `#e5e7eb` empty |
+| Smart Receipting | plain grey `#6b7280` tick, no chip |
+| Delete | edit mode only, 34px column |
+
+**Every supplier table shares one colgroup.** The tier sections are separate
+tables; if their column definitions differ from the top table by even one
+entry, every column after the difference drifts, and the drift grows across the
+row.
+
+> **Never size a shared column as a percentage.** `34%` is relative to each
+> table's own width, so any difference between tables compounds. Fixed pixels
+> everywhere, with one flexible column absorbing the slack.
+
+**Five stars, five factors** — Purchase Order Volume, Quotes on Time, Customer
+Rating, PartsCheck Terms, PartsCheck Positive — each with its own tooltip. Not
+a single score out of five.
+
+**Removing a supplier asks for scope.** A supplier can be right for one make and
+wrong for another, so the dialog offers "This make only" or "All makes" as
+radios with their consequences stated, and a grey warning naming the safer
+alternative.
+
+---
+
+## Get Price — Time Picker
+
+A centred modal, not a dropdown: choosing a time is a task in its own right.
+
+| Element | Spec |
+|---|---|
+| Modal | 560px, body `min-height: 430px` |
+| Slot | 28px, `11px`, `3px` radius — identical to the bar's chips |
+| Urgent | toggle, 38×20px, amber when on |
+| Grid | six per row |
+
+**The body holds a fixed height.** Urgent offers more slots than Normal, so
+without it the modal grows and shrinks under the cursor.
+
+**Slots match the bar's chips exactly.** They are the same control in two
+places and should not look like two different things.
+
+**Times only, no date.** A quote is wanted today, so the list runs from the next
+half hour to the end of the working day and rolls into tomorrow morning once
+today is spent, with a `Tomorrow` divider.
+
+**Choosing a time applies it and closes.** No Apply button — the choice is the
+action.
+
+> A click on a slot re-renders the list, so the clicked element is detached by
+> the time a document-level handler runs. An outside-click handler must ignore
+> targets no longer in the document, or the modal closes on every selection.
+
+---
+
+## Margin Rule Table
+
+Used by Check Price and Get Price from one renderer.
+
+| Element | Spec |
+|---|---|
+| Selected rule | `800` `#111827`, rates `800` |
+| Other rules | `600` `#6b7280`, rates `500` |
+| MAPPED pill | `9px` uppercase, `#15803d` on `#dcfce7` |
+| Row states | matched `#fbfefc`, active `#f0fdf4` |
+
+**Weight carries the selection.** Every row was `700`, so nothing stood out.
+Unselected rows now read at the same weight as a column heading.
+
+**MAPPED, not Matched** — it describes the debtor mapping, not a coincidence.
+
+---
+
+## Order Parts
+
+| Element | Spec |
+|---|---|
+| Bar | `align-items: stretch`, `1px solid #4ade80` |
+| Section | `12px 18px` |
+| Heading | `11px / 600` `#6b7280` |
+| Divider | `top: 12px` to `bottom: 12px` |
+
+**Sections stretch to the bar height.** With `flex-start` each section is only
+as tall as its content, so a short section gets a short divider hugging the top.
+
+---
+
+## Terminology
+
+Pricing methods have one canonical form, used verbatim everywhere:
+
+| Canonical | Never |
+|---|---|
+| Markup on Cost | markup on cost, mark up to cost |
+| Show Markup on Cost | show mark up to cost |
+| Charge of List | |
+| `+20% on cost` | +20% of cost |
+| `100% of list` | |
+
+**`on cost` and `of list` are both correct.** List price is the base you take a
+percentage *of*; markup is added *on* cost. The prepositions are doing different
+work, which is why they drift.
+
+---
+
+## Settlement Discount
+
+The cost breakdown reads as a chain, each step applying to the one before:
+
+```
+List Price                          $659.80
+Dealer Discount 15% (target 20%)     -$98.97
+Invoice Cost                        $560.83
+Settlement Discount 5%               -$28.04
+Your Cost                           $532.79
+```
+
+**Settlement compounds off Invoice Cost, not List.** The 5% is taken from the
+already-discounted figure.
+
+---
+
+## Pale Green — Use Sparingly
+
+`#f0fdf4` is not in the token list yet carries real work across the app: hover
+states, matched rows, selected cells. It is the easiest colour to reach for and
+the easiest to overuse.
+
+**Do not use it for:** a control's resting state, a card header in an edit
+mode, or anything that is not a selection or a hover. A green wash reads as
+"applied", so applying it to something that is merely available is misleading.
 
 
 ---
