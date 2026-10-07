@@ -46,7 +46,7 @@ These are stock Tailwind values, used for pills, badges, selected states and bac
 | `gray-100` | `#f3f4f6` | Inactive badges, light dividers, tooltip row dividers |
 | `gray-200` | `#e5e7eb` | Borders, card borders, table dividers |
 | `gray-300` | `#d1d5db` | Stronger borders |
-| `gray-400` | `#9ca3af` | Placeholder text, secondary labels, bullet points |
+| `gray-400` | `#9ca3af` | Placeholder text, secondary labels, bullet points, summary card accent bars (§9) |
 | `gray-500` | `#6b7280` | Body text, descriptions, tooltip labels |
 | `gray-600` | `#4b5563` | Parallel type text, secondary icons. **Not for card headers** — those are `gray-500` |
 | `gray-700` | `#374151` | Primary body text |
@@ -676,28 +676,79 @@ Not currently implemented. Pattern would follow: `background: #fff`, `border-rig
 
 ---
 
-## 9. Summary Bar (Check Price)
+## 9. Summary Cards (Check Price)
 
-The three stat blocks — Your Cost, Your Sell, Your Profit — sit in a white `border-bottom: 2px solid #e5e7eb` bar.
+Four cards sit in a row beneath the quote header: **Your Cost**, **Your Sell**,
+**Your Profit**, **Customer Saving**. They are separate cards, not segments of
+one bar, and they scroll with the page rather than sticking.
 
+### The card
+
+```css
+background: #fff;
+border: 1px solid #d1d5db;
+padding: 18px 20px;
+text-align: center;
+position: relative;        /* the accent bar is positioned against it */
+flex: 1 1 180px;
+--accent: #9ca3af;         /* grey by default */
 ```
-position: sticky;
-top: 104px; /* nav + sub-nav height */
-z-index: 298;
+
+Cards sit in a flex row with `gap: 12px`, square corners, and the row is
+separated from what surrounds it by its own `14px` of padding — the cards carry
+no vertical margin of their own.
+
+### The accent bar
+
+Every card carries a **3px bar flush along its bottom edge**, drawn as a
+pseudo-element rather than a border so it can be coloured independently of the
+card's own `#d1d5db` outline.
+
+```css
+.si::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+}
 ```
 
-**Stat label:** `font-size: 10px; color: #6b7280; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px`  
-**Stat value:** `font-size: 22px; font-weight: 700; color: #111827`  
-**Your Profit value:** `color: #16a34a`
+| Card | Accent | Meaning |
+|---|---|---|
+| Your Cost | `gray-400` `#9ca3af` | Always grey — the bar is decoration here |
+| Your Sell | `gray-400` `#9ca3af` | Always grey |
+| Customer Saving | `gray-400` `#9ca3af` | Always grey |
+| **Your Profit** | **varies** | The only card whose bar carries meaning |
 
-**Inline badge pills (below values):**
-- Cost: `▼ $X vs list` — green if below dealer list, red if above
-- Sell: `▼ $X vs list` — green if below, dark if above
-- Profit: `X.X% margin` — always green background
+**Your Profit is the exception.** Its accent is set from the same condition that
+colours its figure, so the card edge and the number can never disagree:
 
-Hovering each stat reveals a `.sitip` tooltip with detailed breakdown.
+| Condition | Accent | Figure |
+|---|---|---|
+| Profit **at or above** the dealer benchmark | `#16a34a` brand green | green |
+| Profit **below** the dealer benchmark | `#d97706` amber | amber |
 
----
+**The dealer benchmark** is what the repairer would have made buying every
+selected part from the dealer (supplier `s2`), priced under the active margin
+rule. It is recalculated on every selection change, so the comparison always
+reflects the current quote rather than a stored figure.
+
+This is a **comparison, not a threshold.** There is no fixed margin percentage
+at which the card turns amber — it turns amber when this quote earns less than
+the dealer-only equivalent would have, whatever that happens to be.
+
+### Type
+
+**Label:** `font-size: 10px`, `color: #6b7280`, `font-weight: 500`, uppercase,
+`letter-spacing: 0.5px`
+**Value:** `font-size: 22px`, `font-weight: 700`, `color: #111827`
+**Your Profit value:** green or amber, per the table above
+
+### Hover
+
+Each card reveals a breakdown panel on hover, using the shared tooltip
+component. Content differs per card; the component does not.
 
 ## 10. Toolbar
 
@@ -1001,7 +1052,7 @@ values only where something deliberately deviates.
 
 ---
 
-*Last updated: October 2026 — Button height corrected from 30px to 32px and weight from 700 to 600 to match the Tailwind small button; added a note on the missing Tailwind mapping. Grid View price amount increased from 16px to 18px for legibility across wide quotes. Previously, June 2026 — primary green moved to Tailwind `green-600` (`#16a34a`) with hover at `green-700` (`#15803d`); the standalone `list-green` token was retired; List View SELECTED button now uses brand green; Grid View selected cell outline moved to Tailwind `green-500` (`#22c55e`) for a softer "selected" read that doesn't compete with primary actions. Added Line Status Colours (§2) for row states across both views — Removed (`red`), Additional (`sky`), Supplier (`amber`), Modified (`orange`), Optional (`green`). Each status has two shades: `-200` (part row / Grid View / List View part header) with CSS variable `--line-accent-<status>-bg`, and `-50` (List View supplier price rows) with CSS variable `--line-accent-<status>-bg-subtle`. The entire green palette (except part-type colours) is now stock Tailwind with no custom theme overrides. Maintained alongside the PartsCheck prototype. Update this document whenever a design decision changes.*
+*Last updated: October 2026 — Button height corrected from 30px to 32px and weight from 700 to 600 to match the Tailwind small button; added a note on the missing Tailwind mapping; rewrote §9 Summary Cards against the build — four cards not three, the 3px `--accent` bar, and the dealer-benchmark comparison that colours Your Profit. Grid View price amount increased from 16px to 18px for legibility across wide quotes. Previously, June 2026 — primary green moved to Tailwind `green-600` (`#16a34a`) with hover at `green-700` (`#15803d`); the standalone `list-green` token was retired; List View SELECTED button now uses brand green; Grid View selected cell outline moved to Tailwind `green-500` (`#22c55e`) for a softer "selected" read that doesn't compete with primary actions. Added Line Status Colours (§2) for row states across both views — Removed (`red`), Additional (`sky`), Supplier (`amber`), Modified (`orange`), Optional (`green`). Each status has two shades: `-200` (part row / Grid View / List View part header) with CSS variable `--line-accent-<status>-bg`, and `-50` (List View supplier price rows) with CSS variable `--line-accent-<status>-bg-subtle`. The entire green palette (except part-type colours) is now stock Tailwind with no custom theme overrides. Maintained alongside the PartsCheck prototype. Update this document whenever a design decision changes.*
 
 ---
 
