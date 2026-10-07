@@ -249,12 +249,18 @@ border: none;
 border-radius: 3px;
 padding: 7px 16px;
 font-size: 12px;
-font-weight: 700;
+font-weight: 600;
 cursor: pointer;
 ```
 Hover: `background: #15803d`
 
-**Height is 30px** for every button. There is no second size.
+**Height is 32px** for every button. There is no second size.
+
+> **These values match the Tailwind small button, which is what the build uses.**
+> 32px high, 12px text, weight 600. Earlier revisions of this guide said 30px
+> and weight 700 — those were measured from the prototype's hand-written CSS,
+> not from the component library, and were wrong. If a spec and the component
+> disagree, the component wins.
 
 ### The three button tiers
 
@@ -267,7 +273,7 @@ invent values.
 | **Secondary** | `#fff` | `#16a34a` | `#16a34a` | A choice that is currently applied — Quick Select, selected time slot, active margin rule |
 | **Tertiary** | `#fff` | `#d1d5db` | `#374151` | Neutral actions — Print, Export, Clear Selections, Cancel |
 
-All three are 30px tall with a 3px radius and 12px text.
+All three are 32px tall with a 3px radius and 12px text at weight 600 — the Tailwind small button.
 
 **Case follows context, not tier.**
 
@@ -567,7 +573,7 @@ The grid view is a `<table>` with `border-collapse: collapse`.
 
 Price cell content (top to bottom):
 1. Type label (`font-size: 10px, font-weight: 700, uppercase, supplier type colour`) + optional comment icon
-2. Price amount (`font-size: 16px, font-weight: 800 selected / 500 unselected, color: #222`)
+2. Price amount (`font-size: 18px, font-weight: 800 selected / 500 unselected, color: #222`)
 3. Profit (`font-size: 10px, font-weight: 700, color: #16a34a`)
 4. ETD (`font-size: 9px, color: #999`)
 5. MODIFY button (hidden, revealed on selection — `position: absolute, bottom: 0, left: 0, right: 0`)
@@ -764,7 +770,7 @@ Two-state buttons. The applied state must be obvious at a glance.
 | Hover | `#f3f4f6` | `#9ca3af` | `#374151` |
 | **Applied** | `#fff` | `#16a34a` | `#16a34a` + green tick |
 
-`height: 30px`, `padding: 0 12px`, `border-radius: 3px`, `font-size: 12px`, `font-weight: 600`
+`height: 32px`, `padding: 0 12px`, `border-radius: 3px`, `font-size: 12px`, `font-weight: 600`
 
 Clicking an applied button clears it. Selecting the other switches. Changing the
 margin rule **re-runs** an active Quick Select under the new rule, so the button
@@ -960,9 +966,42 @@ All other icons are inline SVGs. Sizing conventions:
 - Modals trap focus when open (to be implemented)
 - Colour is never the only indicator of state — text labels accompany all status changes
 
+
+## A Note On This Guide And The Component Library
+
+This guide is written in raw CSS — hex colours, pixel sizes, explicit weights.
+The application is built with **Tailwind**, and the two have never been mapped
+to each other. That gap has already produced one wrong specification: buttons
+were documented at 30px and weight 700, measured from the prototype's
+hand-written CSS, when the Tailwind small button the build actually uses is
+32px and weight 600.
+
+**Until a mapping exists, treat this guide as describing intent rather than
+implementation.** Where a value here and a component in the build disagree,
+the component is right and this guide needs correcting.
+
+Two consequences worth knowing:
+
+**Other values in this guide may carry the same error.** Anything derived from
+the prototype rather than from the component library could be a step off —
+heights, weights and spacing most likely, since those are where Tailwind's
+scale and hand-written CSS diverge quietly. Colours are lower risk, being
+stated explicitly in both.
+
+**Colour notation differs too.** This guide is entirely hex; Tailwind v4 ships
+its palette in OKLCH. `#9ca3af` is `gray-400`, `oklch(0.707 0.022 261.325)` —
+easy to land one ramp over, as happened when a `gray-400` accent was built as
+`slate-300`.
+
+**What would fix this properly:** a mapping table naming the Tailwind component
+or token for each pattern here, maintained by someone with the component
+library in front of them. Specs could then name the component and give pixel
+values only where something deliberately deviates.
+
+
 ---
 
-*Last updated: June 2026 — primary green moved to Tailwind `green-600` (`#16a34a`) with hover at `green-700` (`#15803d`); the standalone `list-green` token was retired; List View SELECTED button now uses brand green; Grid View selected cell outline moved to Tailwind `green-500` (`#22c55e`) for a softer "selected" read that doesn't compete with primary actions. Added Line Status Colours (§2) for row states across both views — Removed (`red`), Additional (`sky`), Supplier (`amber`), Modified (`orange`), Optional (`green`). Each status has two shades: `-200` (part row / Grid View / List View part header) with CSS variable `--line-accent-<status>-bg`, and `-50` (List View supplier price rows) with CSS variable `--line-accent-<status>-bg-subtle`. The entire green palette (except part-type colours) is now stock Tailwind with no custom theme overrides. Maintained alongside the PartsCheck prototype. Update this document whenever a design decision changes.*
+*Last updated: October 2026 — Button height corrected from 30px to 32px and weight from 700 to 600 to match the Tailwind small button; added a note on the missing Tailwind mapping. Grid View price amount increased from 16px to 18px for legibility across wide quotes. Previously, June 2026 — primary green moved to Tailwind `green-600` (`#16a34a`) with hover at `green-700` (`#15803d`); the standalone `list-green` token was retired; List View SELECTED button now uses brand green; Grid View selected cell outline moved to Tailwind `green-500` (`#22c55e`) for a softer "selected" read that doesn't compete with primary actions. Added Line Status Colours (§2) for row states across both views — Removed (`red`), Additional (`sky`), Supplier (`amber`), Modified (`orange`), Optional (`green`). Each status has two shades: `-200` (part row / Grid View / List View part header) with CSS variable `--line-accent-<status>-bg`, and `-50` (List View supplier price rows) with CSS variable `--line-accent-<status>-bg-subtle`. The entire green palette (except part-type colours) is now stock Tailwind with no custom theme overrides. Maintained alongside the PartsCheck prototype. Update this document whenever a design decision changes.*
 
 ---
 
